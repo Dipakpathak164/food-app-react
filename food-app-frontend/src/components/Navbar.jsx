@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
-const Navbar = ({ baseUrl = '/', imagePath = '/assets/images/', isLoggedIn = false }) => {
+const Navbar = ({ baseUrl = '/', imagePath = '/assets/images/'}) => {
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -43,6 +44,8 @@ const Navbar = ({ baseUrl = '/', imagePath = '/assets/images/', isLoggedIn = fal
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  const { isLoggedIn, user, logout } = useAuth();
 
   return (
     <header>
@@ -97,35 +100,35 @@ const Navbar = ({ baseUrl = '/', imagePath = '/assets/images/', isLoggedIn = fal
                 </ul>
 
                 {!isLoggedIn ? (
-                  <Link  to="/signin" className="btn unique-button animate__animated animate__heartBeat d-inline-flex align-items-center justify-content-center">
-                    Sign Up
-                  </Link>
-                ) : (
-                  <ul className="d-flex">
-                    <li>
-                      <Link to={baseUrl} className="btn unique-button unique-button-border unique-button-border_plan animate__animated animate__heartBeat d-inline-flex align-items-center justify-content-center poppins-semibold">
-                        Our Pricing Plans <img src={`${imagePath}stars.svg`} alt="stars" />
-                      </Link>
-                    </li>
-                    <li className="nav-item dropdown custom_dropdown me-0 d-blockAfterLogin">
-                      <a data-bs-toggle="dropdown" className="dropdown-toggle" href="#">
-                        <img src={`${imagePath}no-profile.png`} className="userProfileImg" alt="profile" width="36" />
-                      </a>
-                      <ul className="dropdown-menu dd-menu">
-                        <li className="nav-item dropdown-menu_menu">
-                          <a className="nav-link" href="#" id="menu_profile">
-                            <img src={`${imagePath}profile-circle.png`} alt="profile-circle" /> My Profile
-                          </a>
-                        </li>
-                        <li className="nav-item dropdown-menu_menu mb-0">
-                          <Link to={`${baseUrl}dashboard/logout`} className="nav-link">
-                            <img src={`${imagePath}logoutNew.png`} alt="logoutNew" /> Logout
-                          </Link>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                )}
+        <Link to="/signin" className="btn unique-button">
+          Sign Up
+        </Link>
+      ) : (
+        <ul className="d-flex">
+          <li className="nav-item dropdown">
+            <a data-bs-toggle="dropdown" className="dropdown-toggle" href="#">
+              <img
+                src={`${imagePath}no-profile.png`}
+                className="userProfileImg"
+                alt="profile"
+                width="36"
+              />
+            </a>
+            <ul className="dropdown-menu">
+              <li>
+                <Link className="nav-link" to="/profile">
+                  <img src={`${imagePath}profile-circle.png`} alt="profile-circle" /> My Profile
+                </Link>
+              </li>
+              <li>
+                <button onClick={logout} className="nav-link btn btn-link">
+                  <img src={`${imagePath}logoutNew.png`} alt="logout" /> Logout
+                </button>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      )}
               </div>
               {/* This is for the bg-body toggle */}
               <div id="overlay_menu" ref={overlayMenuRef}></div>

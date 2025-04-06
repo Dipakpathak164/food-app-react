@@ -2,8 +2,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+
+import { useAuth } from '../context/AuthContext';
 
 const SignupForm = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,19 +24,36 @@ const SignupForm = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post('http://localhost:5000/api/auth/signup', formData);
-      toast.success(res.data.message || 'Registration successful!');
-    } catch (err) {
-      toast.error(err.response?.data?.message || 'Something went wrong');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+  try {
+    const res = await axios.post('http://localhost:5000/api/auth/signup', formData);
+    const { token, user } = res.data;
+    if (token && user) {
+      login(token, user);
+      toast.success('Signup successful!');
+      navigate('/');
+    } else {
+      toast.error('Signup succeeded, but missing token or user data');
     }
-  };
+  } catch (err) {
+    toast.error(err.response?.data?.message || 'Signup failed!');
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
+  
+  
+
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className='SignUpForm formBoxParents'>
-       <div className="container">
+       <div className="w-100">
        <form onSubmit={handleSubmit} className='row'>
         <div className="col-md-12">
             <h1>Sign Up</h1>
@@ -61,19 +83,28 @@ const SignupForm = () => {
             </div>
         </div>
         <div className="col-md-12">
-            <div className="form-group">
-              <input 
-               type="password" 
-               name="password" 
-               placeholder="Password"
-               value={formData.password}
-               onChange={handleChange}
-               className='form-control'
-              />
-            </div>
+        <div className="form-group position-relative">
+  <input 
+    type={showPassword ? "text" : "password"} 
+    name="password" 
+    placeholder="Password"
+    value={formData.password}
+    onChange={handleChange}
+    className='form-control'
+  />
+  <i
+    className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"} position-absolute`}
+    style={{ top: '50%', right: '10px', transform: 'translateY(-50%)', cursor: 'pointer' }}
+    onClick={() => setShowPassword(!showPassword)}
+  ></i>
+</div>
+
         </div>
-        <div className="col-md-12">
-          <button type="submit" className='btn'>Register</button>
+        <div className="col-md-12 text-center">
+        <button type="submit" className="btn unique-button w-100" disabled={isSubmitting}>
+          {isSubmitting ? 'Registering...' : 'Register'}
+        </button>
+
         </div>
         </form>
        </div>

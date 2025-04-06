@@ -1,6 +1,26 @@
 .formBoxParents{
     position: absolute;
-    top: 50%;
+    top: calc(50% + 55px);
     left: 50%;
     transform: translate(-50%, -50%);
+    max-width: 448px;
+    background-color: #ffffff;
+    width: 100%;
+    padding: 20px;
+    border-radius: 30px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.form-group{
+    margin-bottom: 20px;
+}
+.form-control{
+    height: 48px;
+}
+.form-control::placeholder{
+    opacity: 0.6;
+}
+.formBoxParents h1{
+    font-weight: bold;
+    font-size: 32px;
+    margin-bottom: 20px;
 }
