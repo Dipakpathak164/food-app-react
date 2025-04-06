@@ -1,0 +1,23 @@
+/* src/styles/variables.css */
+:root {
+    --main-bg-white: #FFFFFF;
+    --second-bg-white: #FDFDFE;
+    --text-white: #ffffff;
+    --text-black: #18161D;
+    --text-gray: #51575D;
+    --text-blue-gray: #7F879E;
+    --blue-dark-primary: #1D263A;
+    --font-regular: "MazzardH-Regular";
+    --font-medium:'MazzardH-Medium';
+    --font-semi-bold:"MazzardH-SemiBold";
+    --font-jakarta:"Plus Jakarta Sans", sans-serif;
+    --blue-dark-secondary: #007BBC;
+    --blue-light-primary: #51CADE;
+    --blue-light-secondary: #68E0CF;
+    --main-color-red: #e84242;
+    --main-color-green: #4caf50;
+    --main-color-blue: #349eff;
+    --main-color-orange: #d68102;
+    --main-color-yellow: #a98921;
+  }
+  

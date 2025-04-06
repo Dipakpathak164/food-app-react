@@ -1,0 +1,129 @@
+import React from 'react';
+
+const Home = ({ imagePath, baseUrl }) => {
+  return (
+    <>
+      <section className="heroSection position-relative">
+        <div className="container position-relative">
+          <div className="row">
+            <div className="col-md-12 text-center">
+              <h1>Delicious <br /> Buregers</h1>
+            </div>
+          </div>
+          <img src={`${imagePath}floating_burger_01.png`} className="center_img" alt="center_img" />
+        </div>
+        <img src={`${imagePath}floating_fries_01.png`} className="left_img" alt="left_img" />
+        <img src={`${imagePath}floating_fries_02.png`} className="right_img" alt="right_img" />
+      </section>
+
+      <section className="bestsellers-items">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-12 text-center">
+              <h2>Bestsellers</h2>
+            </div>
+          </div>
+          <div className="row">
+            {[
+              { title: "Bacon+Cheese +Green Burger", price: "$6.00", img: "product_01.jpg" },
+              { title: "Black Angus Burger", price: "$12.00", img: "product_02.jpg" },
+              { title: "Bøfsandwich", price: "$8.00", img: "product_02.jpg" },
+              { title: "Bacon+Cheese +Green Burger", price: "$6.00", img: "product_01.jpg" },
+              { title: "Black Angus Burger", price: "$12.00", img: "product_02.jpg" },
+              { title: "Bøfsandwich", price: "$8.00", img: "product_02.jpg" },
+              { title: "Bacon+Cheese +Green Burger", price: "$6.00", img: "product_01.jpg" },
+              { title: "Black Angus Burger", price: "$12.00", img: "product_02.jpg" },
+              { title: "Bøfsandwich", price: "$8.00", img: "product_02.jpg" },
+            ].map((item, i) => (
+              <div className="col-md-4 item_cards position-relative" key={i}>
+                <a href={`${baseUrl}product-details`} className="cards d-inline-flex w-100">
+                  <div className="cards_header">
+                    <h5>Category</h5>
+                    <h3>{item.title}</h3>
+                  </div>
+                  <div className="cards_body">
+                    <img src={`${imagePath}${item.img}`} alt={item.img} />
+                  </div>
+                </a>
+                <div className="cards_footer d-flex align-items-center justify-content-between">
+                  <div className="price">
+                    <p>{item.price}</p>
+                    <small>220gr / 600 cal</small>
+                  </div>
+                  <div className="check_btns">
+                    <button className="btn btn_pus d-flex justify-content-center align-items-center">
+                      <img src={`${imagePath}plus.png`} alt="plus" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <img src={`${imagePath}wave.svg`} className="w-100" alt="wave" />
+      </section>
+
+      <section className="promo_section position-relative">
+        <img src={`${imagePath}home_01_delivery-768x708.png`} className="left_handimg" alt="delivery" />
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6 offset-md-6">
+              <div>
+                <img src={`${imagePath}logo.png`} alt="logo" />
+                <h3>Free delivery 7 days a week</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+        <img src={`${imagePath}wave2.svg`} alt="wave" className="w-100 wave_bottom3" />
+      </section>
+
+      <section className="review_section position-relative">
+        <div className="container">
+          <h2>Reviews</h2>
+          <div className="col-md-12">
+            <img src={`${imagePath}floating_burger_01.png`} className="w-100" alt="center_img" />
+          </div>
+        </div>
+        <img src={`${imagePath}floating_fries_01.png`} className="left_img left_img2" alt="left_img" />
+
+        <div className="position-relative">
+          <div className="container">
+            <div className="row">
+              <div className="col-md-6">
+                <img src={`${imagePath}reviews_01.png`} className="w-100" alt="reviews_01" />
+              </div>
+              <div className="col-md-6 d-flex align-items-center">
+                <div>
+                  <h5>"I don't remember a single mouthful I didn't enjoy!"</h5>
+                  <p className="reviewer">@casey</p>
+                </div>
+              </div>
+              <div className="col-md-6 d-flex align-items-center">
+                <div className="text-right">
+                  <h5>"Pretty impressive! Legit taste of burgers!!!"</h5>
+                  <p className="reviewer">@mark_twin</p>
+                </div>
+              </div>
+              <div className="col-md-6">
+                <img src={`${imagePath}reviews_02-600x522.png`} className="w-100" alt="reviews_02" />
+              </div>
+              <div className="col-md-6">
+                <img src={`${imagePath}reviews_03-600x478.png`} className="w-100" alt="reviews_03" />
+              </div>
+              <div className="col-md-6 d-flex align-items-center">
+                <div>
+                  <h5>"Eatsy burgers are some of the most tastiest burgers I've had!"</h5>
+                  <p className="reviewer">@sarah_composer</p>
+                </div>
+              </div>
+              {/* If there's more review rows, you can continue here */}
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+};
+
+export default Home;

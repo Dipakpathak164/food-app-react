@@ -1,0 +1,24 @@
+/* src/styles/fonts.css */
+
+@font-face {
+    font-family: 'MazzardH-Regular';
+    src: url('../assets/fonts/MazzardH-Regular.ttf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'MazzardH-Medium';
+    src: url('../assets/fonts/MazzardH-Medium.ttf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'MazzardH-SemiBold';
+    src: url('../assets/fonts/MazzardH-SemiBold.otf') format('truetype');
+  }
+
+  @font-face {
+    font-family: 'IntroRust-Base';
+    src: url('../assets/fonts/IntroRust-Base.otf') format('truetype');
+  }
+
+
+  
