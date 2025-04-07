@@ -53,7 +53,7 @@ router.get('/', (req, res) => {
   });
 });
 
-// === Get Single Food By ID ===
+// === ✅ Get Single Food By ID (for Edit Page) ===
 router.get('/:id', (req, res) => {
   const { id } = req.params;
   const sql = 'SELECT * FROM foods WHERE id = ?';
@@ -71,6 +71,7 @@ router.get('/:id', (req, res) => {
     res.json(results[0]);
   });
 });
+
 
 // === Update Food By ID ===
 router.put('/:id', upload.single('image'), (req, res) => {

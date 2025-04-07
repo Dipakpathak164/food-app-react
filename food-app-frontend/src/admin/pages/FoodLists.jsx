@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import ConfirmModal from '../../components/ConfirmModal';
 
-import { MdEdit, MdDelete } from 'react-icons/md';
+import { MdEdit, MdDelete, MdAdd } from 'react-icons/md';
 
 const FoodLists = () => {
     const [foods, setFoods] = useState([]);
@@ -62,7 +62,7 @@ const FoodLists = () => {
         <div className="container mt-4">
             <div className="d-flex justify-content-between align-items-center mb-3">
                 <h3>Food List</h3>
-                <Link to="/admin/add-food-items" className="btn btn-success">Add New Food</Link>
+                <Link to="/admin/add-food-items" className="btn btn-red"><MdAdd className=''/> Add New Food</Link>
             </div>
 
             <table className="table table-bordered table-hover">
@@ -100,7 +100,7 @@ const FoodLists = () => {
                                     )}
                                 </td>
                                 <td className='text-center'>
-                                    <Link to={`/admin/edit-food/${food.id}`} className="btn me-2 btnEdit">
+                                    <Link to={`/admin/foods/edit/${food.id}`} className="btn me-2 btnEdit">
                                     <MdEdit />
                                     </Link>
                                     <button

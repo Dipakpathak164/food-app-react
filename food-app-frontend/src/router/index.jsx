@@ -10,7 +10,8 @@ import SignInForm from '../auth/SignInForm';
 import AdminLayout from '../admin/AdminLayout';
 import Dashboard from '../admin/pages/Dashboard';
 import AddFood from '../admin/pages/AddFood';
-import FoodLists from '../admin/pages/FoodLists'
+import FoodLists from '../admin/pages/FoodLists';
+import EditFood from '../admin/pages/EditFood'
 // (Optional) Other admin pages can be imported too
 
 const router = createBrowserRouter([
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
       // Add more admin routes like:
       { path: 'add-food-items', element: <AddFood /> },
       { path: 'foods', element: <FoodLists /> },
+      { path: 'foods/edit/:id', element: <EditFood /> },
     ],
   },
 ]);

@@ -1,13 +1,41 @@
 .sidebar {
-    width: 220px;
-    background: var(--main-color-red);
+    width: 100%;
+    background: var(--blue-dark-primary);
     color: white;
-    min-height: 100vh;
+    height: 100%;
     padding-top: 20px;
     transition: width 0.3s ease;
   }
-  .sidebar.collapsed {
+  .sidebar-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh; /* Full viewport height */
+    width: 240px; /* Adjust width as needed */
+    z-index: 1000;
+    background-color: #fff; /* Optional */
+    border-right: 1px solid #dee2e6; /* Optional */
+    overflow-y: auto;
+    transition: width 0.3s ease;
+  }
+  
+  .dashboard-inner-content {
+    margin-left: 240px; /* Same as sidebar width */
+    padding:0 1rem 1rem 1rem; /* Optional spacing */
+    background-color: #ffffff;
+    height: 100%;
+    min-height: 100vh;
+    transition: width 0.3s ease;
+  }
+  .admin-layout-wrapper.collapsed .sidebar-fixed{
     width: 70px;
+  }
+  .admin-layout-wrapper.collapsed  .dashboard-inner-content{
+    margin-left: 70px;
+  }
+  
+  .sidebar.collapsed {
+    width: 100%;
   }
   .sidebar .toggle-btn {
     background: transparent;
@@ -15,6 +43,27 @@
     border: none;
     margin: 0 0 10px 10px;
     font-size: 20px;
+  }
+  .top-header{
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: calc(100% - 240px);
+    z-index: 1024;
+    background-color: #ffffff;
+  }
+  .admin-layout-wrapper.collapsed .top-header{
+    width: calc(100% - 70px);
+  }
+  .outer_div{
+    height: 100%;
+    background-color: #f2f2f2f8;
+    min-height: 100vh;
+    margin-top: 75px;
+  }
+  .inner_div{
+    background-color: #fff;
+    border-radius: 8px;
   }
   .sidebar-menu {
     list-style: none;
@@ -27,9 +76,6 @@
   }
   .sidebar-menu a:hover {
     background: #34495e;
-  }
-  .dashboard-inner-content{
-    background-color: #ffffff;
   }
   button.btn-outline-primary{
     border: 1px solid var(--main-color-red);
@@ -77,10 +123,22 @@
     fill: green !important;
     font-size: 22px;
   }
-  .outer_div{
-    background-color: #f2f2f2f8;
-    height: 100%;
+  button.btn{
+    border-radius: 40px;
   }
-  .inner_div{
-    background-color: #fff;
+  a.btn-red,.btn-red{
+    background-color: var(--main-color-red);
+    color: #fff;
+    border: 1px solid var(--main-color-red);
+    border-radius: 40px;
   }
+  a.btn-red:hover,.btn-red:hover{
+    border: 1px solid var(--main-color-red);
+    color: var(--main-color-red);
+  }
+  .btn svg{
+    font-size: 20px;
+    position: relative;
+    bottom: 2px;
+  }
+ 

@@ -9,6 +9,7 @@ const Breadcrumbs = () => {
     customers: 'Customers',
     foods: 'Food List',
     'add-food-items': 'Add new food',
+    edit: 'Edit',
     // Add more mappings as needed
   };
 
@@ -16,9 +17,14 @@ const Breadcrumbs = () => {
     .split('/')
     .filter((x) => x && x !== 'admin');
 
-  // ✅ Manually insert virtual parent for certain pages
+  // ✅ Insert virtual parent if needed
   if (pathnames.includes('add-food-items') && !pathnames.includes('foods')) {
     pathnames = ['foods', ...pathnames];
+  }
+
+  // ✅ Remove trailing ID if last part is numeric (e.g. 26)
+  if (pathnames.length > 1 && /^\d+$/.test(pathnames[pathnames.length - 1])) {
+    pathnames.pop();
   }
 
   const generateLink = (index) => `/admin/${pathnames.slice(0, index + 1).join('/')}`;
@@ -33,7 +39,7 @@ const Breadcrumbs = () => {
 
           return (
             <li
-              key={name}
+              key={name + index}
               className={`breadcrumb-item ${isLast ? 'active' : ''}`}
               aria-current={isLast ? 'page' : undefined}
             >

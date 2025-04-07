@@ -6,13 +6,11 @@ import { MdDashboard, MdPeople, MdFastfood, MdShoppingCart } from 'react-icons/m
 
 import '../Admin.css'; // You can style as needed
 
-const Sidebar = () => {
-    const [collapsed, setCollapsed] = useState(false);
-
+const Sidebar = ({ collapsed, setCollapsed }) => {
     return (
         <div className={`sidebar ${collapsed ? 'collapsed' : ''}`}>
             <button className="toggle-btn" onClick={() => setCollapsed(!collapsed)}>
-                ☰
+               ☰
             </button>
             <ul className="sidebar-menu">
                 <li>
