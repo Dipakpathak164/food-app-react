@@ -59,23 +59,42 @@ router.post('/signin', async (req, res) => {
     email === process.env.SUPER_ADMIN_EMAIL &&
     password === process.env.SUPER_ADMIN_PASSWORD
   ) {
-    return res.status(200).json({ message: 'Super Admin Logged In', role: 'superadmin' });
+    const token = jwt.sign({ email, role: 'superadmin' }, secretKey, { expiresIn: '7d' });
+    return res.status(200).json({
+      message: 'Super Admin Logged In',
+      token,
+      user: { name: 'Super Admin', email, role: 'superadmin' }
+    });
   }
 
   db.query('SELECT * FROM users WHERE email = ?', [email], async (err, result) => {
-    if (err) throw err;
+    if (err) return res.status(500).json({ message: 'Database error' });
 
     if (result.length === 0) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const isMatch = await bcrypt.compare(password, result[0].password);
+    const user = result[0];
+    const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    res.status(200).json({ message: 'User logged in successfully', user: result[0] });
+    const token = jwt.sign({ id: user.id, email: user.email }, secretKey, { expiresIn: '7d' });
+
+    // Return only safe user fields (not password)
+    const safeUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email
+    };
+
+    res.status(200).json({
+      message: 'User logged in successfully',
+      token,
+      user: safeUser
+    });
   });
 });
 

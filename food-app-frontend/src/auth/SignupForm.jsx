@@ -29,22 +29,28 @@ const SignupForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
+      
         try {
-            const res = await axios.post('http://localhost:5000/api/auth/signup', formData);
-            const { token, user } = res.data;
-            if (token && user) {
-                login(token, user);
-                toast.success('Signup successful!');
-                navigate('/');
-            } else {
-                toast.error('Signup succeeded, but missing token or user data');
-            }
+          // Simulate 1-second delay before API call
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+      
+          const res = await axios.post('http://localhost:5000/api/auth/signup', formData);
+          const { token, user } = res.data;
+      
+          if (token && user) {
+            login(token, user);
+            toast.success('Signup successful!');
+            navigate('/');
+          } else {
+            toast.error('Signup succeeded, but missing token or user data');
+          }
         } catch (err) {
-            toast.error(err.response?.data?.message || 'Signup failed!');
+          toast.error(err.response?.data?.message || 'Signup failed!');
         } finally {
-            setIsSubmitting(false);
+          setIsSubmitting(false);
         }
-    };
+      };
+      
 
 
 
@@ -101,9 +107,15 @@ const SignupForm = () => {
 
                     </div>
                     <div className="col-md-12 text-center">
-                        <button type="submit" className="btn unique-button w-100" disabled={isSubmitting}>
-                            {isSubmitting ? 'Registering...' : 'Register'}
-                        </button>
+                    <button type="submit" className="btn unique-button w-100 d-flex justify-content-center align-items-center gap-2" disabled={isSubmitting}>
+  {isSubmitting ? (
+    <>
+      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      Registering...
+    </>
+  ) : 'Register'}
+</button>
+
 
                     </div>
                 </form>
