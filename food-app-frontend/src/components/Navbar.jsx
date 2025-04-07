@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const Navbar = ({ baseUrl = '/', imagePath = '/assets/images/'}) => {
+const Navbar = ({ baseUrl = '/', imagePath = '/assets/images/' }) => {
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -100,35 +100,35 @@ const Navbar = ({ baseUrl = '/', imagePath = '/assets/images/'}) => {
                 </ul>
 
                 {!isLoggedIn ? (
-        <Link to="/signin" className="btn unique-button">
-          Sign Up
-        </Link>
-      ) : (
-        <ul className="d-flex">
-          <li className="nav-item dropdown">
-            <a data-bs-toggle="dropdown" className="dropdown-toggle" href="#">
-              <img
-                src={`${imagePath}no-profile.png`}
-                className="userProfileImg"
-                alt="profile"
-                width="36"
-              />
-            </a>
-            <ul className="dropdown-menu">
-              <li>
-                <Link className="nav-link" to="/profile">
-                  <img src={`${imagePath}profile-circle.png`} alt="profile-circle" /> My Profile
-                </Link>
-              </li>
-              <li>
-                <button onClick={logout} className="nav-link btn btn-link">
-                  <img src={`${imagePath}logoutNew.png`} alt="logout" /> Logout
-                </button>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      )}
+                  <Link to="/signin" className="btn unique-button">
+                    Sign Up/In
+                  </Link>
+                ) : (
+                  <ul className="d-flex">
+                    <li className="nav-item dropdown">
+                      <a data-bs-toggle="dropdown" className="dropdown-toggle" href="#">
+                        <img
+                          src={`${imagePath}no-profile.png`}
+                          className="userProfileImg"
+                          alt="profile"
+                          width="36"
+                        />
+                      </a>
+                      <ul className="dropdown-menu">
+                        <li className='dropdown-menu_menu'>
+                          <Link className="nav-link" to="/profile">
+                            <img src={`${imagePath}profile-circle.png`} alt="profile-circle" /> My Profile
+                          </Link>
+                        </li>
+                        <li className='dropdown-menu_menu mb-0'>
+                          <button onClick={logout} className="nav-link btn btn-link">
+                            <img src={`${imagePath}logoutNew.png`} alt="logout" /> Logout
+                          </button>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                )}
               </div>
               {/* This is for the bg-body toggle */}
               <div id="overlay_menu" ref={overlayMenuRef}></div>

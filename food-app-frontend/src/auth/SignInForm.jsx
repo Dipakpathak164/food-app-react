@@ -3,6 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 const SignInForm = () => {
   const { login } = useAuth();
@@ -18,17 +19,18 @@ const SignInForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
+  
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000)); // 1s delay
-
+  
       const res = await axios.post('http://localhost:5000/api/auth/signin', formData);
       console.log("🧪 Login Response:", res.data);
-
+  
       const { token, user } = res.data;
+  
       if (token && user) {
         login(token, user);
-        toast.success('Login successful!');
+        toast.success(`Welcome back, ${user.name}!`);
         navigate('/');
       } else {
         toast.error('Login succeeded, but missing token or user data');
@@ -39,6 +41,9 @@ const SignInForm = () => {
       setIsSubmitting(false);
     }
   };
+  
+
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="SignUpForm formBoxParents">
@@ -60,9 +65,9 @@ const SignInForm = () => {
             </div>
           </div>
           <div className="col-md-12">
-            <div className="form-group">
+            <div className="form-group position-relative">
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password"
                 className="form-control"
@@ -71,6 +76,11 @@ const SignInForm = () => {
                 required
                 autoComplete="current-password"
               />
+              <i
+                className={`bi ${showPassword ? "bi-eye-slash" : "bi-eye"} position-absolute`}
+                style={{ top: '50%', right: '10px', transform: 'translateY(-50%)', cursor: 'pointer' }}
+                onClick={() => setShowPassword(!showPassword)}
+              ></i>
             </div>
           </div>
           <div className="col-md-12">
@@ -86,6 +96,11 @@ const SignInForm = () => {
                 </>
               ) : 'Sign In'}
             </button>
+          </div>
+          <div className="col-md-12 text-center mt-3">
+            <p className='bottomTexts'>Don't have an Account ?  <Link to="/signup" className="text-primary fw-bold">
+              Create one
+            </Link></p>
           </div>
         </form>
       </div>

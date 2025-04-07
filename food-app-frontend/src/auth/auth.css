@@ -6,7 +6,7 @@
     max-width: 448px;
     background-color: #ffffff;
     width: 100%;
-    padding: 20px;
+    padding: 45px 20px;
     border-radius: 30px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
@@ -23,4 +23,7 @@
     font-weight: bold;
     font-size: 32px;
     margin-bottom: 20px;
+}
+.bottomTexts a{
+    text-decoration: none;
 }

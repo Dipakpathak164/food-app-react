@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { useAuth } from '../context/AuthContext';
 
@@ -29,28 +30,28 @@ const SignupForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-      
+
         try {
-          // Simulate 1-second delay before API call
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-      
-          const res = await axios.post('http://localhost:5000/api/auth/signup', formData);
-          const { token, user } = res.data;
-      
-          if (token && user) {
-            login(token, user);
-            toast.success('Signup successful!');
-            navigate('/');
-          } else {
-            toast.error('Signup succeeded, but missing token or user data');
-          }
+            // Simulate 1-second delay before API call
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+
+            const res = await axios.post('http://localhost:5000/api/auth/signup', formData);
+            const { token, user } = res.data;
+
+            if (token && user) {
+                login(token, user);
+                toast.success('Thanks for signing up!');
+                navigate('/');
+            } else {
+                toast.error('Signup succeeded, but missing token or user data');
+            }
         } catch (err) {
-          toast.error(err.response?.data?.message || 'Signup failed!');
+            toast.error(err.response?.data?.message || 'Signup failed!');
         } finally {
-          setIsSubmitting(false);
+            setIsSubmitting(false);
         }
-      };
-      
+    };
+
 
 
 
@@ -107,16 +108,21 @@ const SignupForm = () => {
 
                     </div>
                     <div className="col-md-12 text-center">
-                    <button type="submit" className="btn unique-button w-100 d-flex justify-content-center align-items-center gap-2" disabled={isSubmitting}>
-  {isSubmitting ? (
-    <>
-      <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-      Registering...
-    </>
-  ) : 'Register'}
-</button>
+                        <button type="submit" className="btn unique-button w-100 d-flex justify-content-center align-items-center gap-2" disabled={isSubmitting}>
+                            {isSubmitting ? (
+                                <>
+                                    <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Signing Up ...
+                                </>
+                            ) : 'Sign Up'}
+                        </button>
 
 
+                    </div>
+                    <div className="col-md-12 text-center mt-3">
+                        <p className='bottomTexts'>Already have an Account ?  <Link to="/signin" className="text-primary fw-bold">
+                            Sign In
+                        </Link></p>
                     </div>
                 </form>
             </div>
