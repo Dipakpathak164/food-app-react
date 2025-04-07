@@ -6,6 +6,9 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
 
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userInfo = localStorage.getItem('user');
@@ -29,15 +32,23 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
   };
 
-  const logout = () => {
+  const logout = async () => {
+    setIsLoggingOut(true);
+  
+    // Optional delay to simulate a loading experience
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setIsLoggedIn(false);
     setUser(null);
+  
+    setIsLoggingOut(false);
   };
+  
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, user, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, user, login, logout, isLoggingOut }}>
       {children}
     </AuthContext.Provider>
   );

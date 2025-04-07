@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = ({ baseUrl = '/', imagePath = '/assets/images/' }) => {
@@ -45,7 +45,14 @@ const Navbar = ({ baseUrl = '/', imagePath = '/assets/images/' }) => {
     };
   }, []);
 
-  const { isLoggedIn, user, logout } = useAuth();
+  const { isLoggedIn, user, logout, isLoggingOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/signin');
+  };
+
 
   return (
     <header>
@@ -121,9 +128,14 @@ const Navbar = ({ baseUrl = '/', imagePath = '/assets/images/' }) => {
                           </Link>
                         </li>
                         <li className='dropdown-menu_menu mb-0'>
-                          <button onClick={logout} className="nav-link btn btn-link">
+                          <button
+                            onClick={handleLogout}
+                            className="nav-link btn btn-link"
+                            disabled={isLoggingOut}
+                          >
                             <img src={`${imagePath}logoutNew.png`} alt="logout" /> Logout
                           </button>
+
                         </li>
                       </ul>
                     </li>
