@@ -54,19 +54,25 @@ const secretKey = process.env.JWT_SECRET;
 router.post('/signin', async (req, res) => {
   const { email, password } = req.body;
 
-  // check if credentials match super admin
+  // ✅ Check if credentials match super admin
   if (
     email === process.env.SUPER_ADMIN_EMAIL &&
     password === process.env.SUPER_ADMIN_PASSWORD
   ) {
     const token = jwt.sign({ email, role: 'superadmin' }, secretKey, { expiresIn: '7d' });
+
     return res.status(200).json({
       message: 'Super Admin Logged In',
       token,
-      user: { name: 'Super Admin', email, role: 'superadmin' }
+      user: {
+        name: 'Super Admin',
+        email,
+        role: 'superadmin'
+      }
     });
   }
 
+  // 🔍 Check regular users
   db.query('SELECT * FROM users WHERE email = ?', [email], async (err, result) => {
     if (err) return res.status(500).json({ message: 'Database error' });
 
@@ -81,21 +87,27 @@ router.post('/signin', async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ id: user.id, email: user.email }, secretKey, { expiresIn: '7d' });
+    const token = jwt.sign(
+      { id: user.id, email: user.email, role: 'user' }, // ✅ Include role in token
+      secretKey,
+      { expiresIn: '7d' }
+    );
 
-    // Return only safe user fields (not password)
+    // ✅ Return only safe fields
     const safeUser = {
       id: user.id,
       name: user.name,
-      email: user.email
+      email: user.email,
+      role: 'user' // ✅ Explicitly assign role here
     };
 
-    res.status(200).json({
+    return res.status(200).json({
       message: 'User logged in successfully',
       token,
       user: safeUser
     });
   });
 });
+
 
 module.exports = router;

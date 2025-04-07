@@ -21,7 +21,7 @@ const SignInForm = () => {
     setIsSubmitting(true);
   
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1s delay
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate delay
   
       const res = await axios.post('http://localhost:5000/api/auth/signin', formData);
       console.log("🧪 Login Response:", res.data);
@@ -31,7 +31,13 @@ const SignInForm = () => {
       if (token && user) {
         login(token, user);
         toast.success(`Welcome back, ${user.name}!`);
-        navigate('/');
+  
+        // ✅ Role-based redirect
+        if (user.role === 'superadmin') {
+          navigate('/admin/dashboard');
+        } else {
+          navigate('/');
+        }
       } else {
         toast.error('Login succeeded, but missing token or user data');
       }
