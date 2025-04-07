@@ -2,7 +2,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { MdEdit } from 'react-icons/md'; // Edit icon
+import { MdEdit } from 'react-icons/md';
+import { FaUpload } from 'react-icons/fa'; // Upload icon
 
 const EditFood = () => {
   const { id } = useParams();
@@ -88,7 +89,6 @@ const EditFood = () => {
       await axios.put(`http://localhost:5000/api/foods/${id}`, updatedData);
       toast.success('Food updated successfully!', { id: toastId });
 
-      // Simulate delay for UX smoothness
       setTimeout(() => {
         navigate('/admin/foods');
       }, 1000);
@@ -156,19 +156,32 @@ const EditFood = () => {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Image </label>
-          <input
-            type="file"
-            className="form-control"
-            name="image"
-            accept="image/*"
-            onChange={handleChange}
-          />
-          {food.image && (
-            <div className="mt-2">
+          <label className="form-label">Image</label>
+          <div className="input-group">
+            <label className="input-group-text" htmlFor="imageUpload">
+              <FaUpload className="me-2" />
+              Upload
+            </label>
+            <input
+              type="file"
+              className="form-control"
+              id="imageUpload"
+              name="image"
+              accept="image/*"
+              onChange={handleChange}
+            />
+          </div>
+
+          {/* Image Preview */}
+          {(formData.image || food.image) && (
+            <div className="mt-3">
               <img
-                src={`http://localhost:5000/uploads/${food.image}`}
-                alt={food.name}
+                src={
+                  formData.image
+                    ? URL.createObjectURL(formData.image)
+                    : `http://localhost:5000/uploads/${food.image}`
+                }
+                alt="Preview"
                 style={{ width: '100px', height: '100px', objectFit: 'cover' }}
               />
             </div>
