@@ -22,12 +22,15 @@ const SignInForm = () => {
   };
 
   return (
-    <div className="container mt-5" style={{ maxWidth: '400px' }}>
-      <h2 className="mb-3">Sign In</h2>
-      {message && <div className="alert alert-info">{message}</div>}
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <input
+    <div className="SignUpForm formBoxParents">
+      <div className='w-100'>
+      <form onSubmit={handleSubmit} className='row'>
+        <div className="col-md-12">
+            <h1>Sign In</h1>
+        </div>
+        <div className="col-md-12">
+          <div className="form-group">
+           <input
             type="email"
             name="email"
             placeholder="Email"
@@ -36,9 +39,11 @@ const SignInForm = () => {
             onChange={handleChange}
             required
             autoComplete="email"
-          />
+            />
+          </div>
         </div>
-        <div className="mb-3">
+        <div className="col-md-12">
+          <div className="form-group">
           <input
             type="password"
             name="password"
@@ -49,9 +54,13 @@ const SignInForm = () => {
             required
             autoComplete="current-password"
           />
+          </div>
         </div>
-        <button type="submit" className="btn btn-primary w-100">Sign In</button>
+        <div className="col-md-12">
+          <button type="submit" className="btn unique-button w-100">Sign In</button>
+        </div>
       </form>
+      </div>
     </div>
   );
 };
