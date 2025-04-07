@@ -1,7 +1,11 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
+import Breadcrumbs from '../components/Breadcrumbs';
 
 const AddFood = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     price: '',
@@ -47,7 +51,7 @@ const AddFood = () => {
 
     // ✅ Price validation
     if (
-      discountedPrice && 
+      discountedPrice &&
       (!priceNum || !discountedNum || discountedNum >= priceNum)
     ) {
       setPriceError('Discounted price must be less than the actual price');
@@ -68,24 +72,31 @@ const AddFood = () => {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      console.log('✅ Food added:', res.data);
-      alert('Food added successfully!');
+      toast.success('Food added successfully!');
+      console.log('Food added:', res.data);
+
+      // Reset form
       setFormData({ name: '', price: '', discountedPrice: '', description: '', image: null });
       setPreview(null);
+
+      // 🔁 Redirect after short delay
+      setTimeout(() => navigate('/admin/foods'), 1000);
     } catch (error) {
-      console.error('❌ Error adding food:', error);
-      alert('Failed to add food');
+      console.error('Error adding food:', error);
+      toast.error('Failed to add food');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="container mt-4">
+    <>
+    <Breadcrumbs />
+    <div className="container mt-4 inner_div p-3">
       <h2>Add New Food</h2>
       <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="mb-3">
-          <label className="form-label">Food Name</label>
+          <label className="form-label">Food Name <span className='text-danger'>*</span></label>
           <input
             type="text"
             name="name"
@@ -97,7 +108,7 @@ const AddFood = () => {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Price (₹)</label>
+          <label className="form-label">Price (₹) <span className='text-danger'>*</span></label>
           <input
             type="number"
             name="price"
@@ -121,7 +132,7 @@ const AddFood = () => {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Description</label>
+          <label className="form-label">Description <span className='text-danger'>*</span></label>
           <textarea
             name="description"
             className="form-control"
@@ -132,7 +143,7 @@ const AddFood = () => {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Image</label>
+          <label className="form-label">Image <span className='text-danger'>*</span></label>
           <input
             type="file"
             name="image"
@@ -149,11 +160,14 @@ const AddFood = () => {
           </div>
         )}
 
-        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+        <div className="text-center">
+        <button type="submit" className="btn btn-outline-primary px-4" disabled={isSubmitting}>
           {isSubmitting ? 'Adding...' : 'Add Food'}
         </button>
+        </div>
       </form>
     </div>
+    </>
   );
 };
 

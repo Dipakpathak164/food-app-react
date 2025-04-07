@@ -1,7 +1,7 @@
-// src/admin/AdminLayout.jsx
 import { Outlet, useNavigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import { useAuth } from '../context/AuthContext';
+import { Toaster } from 'react-hot-toast'; // ✅ Import
 
 const AdminLayout = () => {
   const { user, logout } = useAuth();
@@ -27,7 +27,10 @@ const AdminLayout = () => {
           </div>
         </div>
 
-        <div className="p-4">
+        {/* ✅ Add Toaster Here */}
+        <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+
+        <div className="p-4 outer_div">
           <Outlet />
         </div>
       </div>

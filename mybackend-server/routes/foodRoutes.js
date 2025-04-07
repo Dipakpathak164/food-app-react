@@ -35,7 +35,7 @@ router.post('/', upload.single('image'), (req, res) => {
       return res.status(500).json({ message: 'Failed to add food' });
     }
 
-    res.status(201).json({ message: '✅ Food added successfully', foodId: result.insertId });
+    res.status(201).json({ message: 'Food added successfully', foodId: result.insertId });
   });
 });
 
@@ -95,7 +95,7 @@ router.put('/:id', upload.single('image'), (req, res) => {
       return res.status(500).json({ message: 'Failed to update food' });
     }
 
-    res.json({ message: '✅ Food updated successfully' });
+    res.json({ message: 'Food updated successfully' });
   });
 });
 
@@ -107,11 +107,11 @@ router.delete('/:id', (req, res) => {
 
   db.query(sql, [id], (err, result) => {
     if (err) {
-      console.error('❌ Error deleting food:', err);
+      console.error('Error deleting food:', err);
       return res.status(500).json({ message: 'Failed to delete food' });
     }
 
-    console.log('✅ Deleted successfully:', result);
+    console.log('Deleted successfully:', result);
     res.json({ message: '🗑️ Food deleted successfully' });
   });
 });

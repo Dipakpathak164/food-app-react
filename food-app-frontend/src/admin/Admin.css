@@ -68,3 +68,19 @@
     color: var(--blue-dark-primary);
     text-decoration: none;
   }
+  .btnDelete svg{
+    fill: var(--main-color-red) !important;
+    font-size: 22px;
+  }
+  
+  .btnEdit svg{
+    fill: green !important;
+    font-size: 22px;
+  }
+  .outer_div{
+    background-color: #f2f2f2f8;
+    height: 100%;
+  }
+  .inner_div{
+    background-color: #fff;
+  }
