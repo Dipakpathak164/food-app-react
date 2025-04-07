@@ -15,7 +15,7 @@ const AdminLayout = () => {
   return (
     <div className="d-flex">
       <Sidebar />
-      <div className="flex-grow-1">
+      <div className="flex-grow-1 dashboard-inner-content">
         <div className="d-flex justify-content-end align-items-center p-3 border-bottom">
           <div className="dropdown">
             <button className="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
