@@ -3,6 +3,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/auth');
+const foodRoutes = require('./routes/foodRoutes'); // ✅ Import food routes
 require('./initDB'); // 💡 This initializes DB tables & inserts default admin
 
 dotenv.config();
@@ -20,8 +21,12 @@ app.use(cors({
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// ✅ Serve uploaded images statically
+app.use('/uploads', express.static('uploads'));
+
 // Routes
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes);       // Existing auth routes
+app.use('/api/foods', foodRoutes);      // ✅ New food routes
 
 // Start server
 const PORT = process.env.PORT || 5000;

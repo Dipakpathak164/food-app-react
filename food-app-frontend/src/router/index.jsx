@@ -9,6 +9,8 @@ import SignInForm from '../auth/SignInForm';
 // Admin
 import AdminLayout from '../admin/AdminLayout';
 import Dashboard from '../admin/pages/Dashboard';
+import AddFood from '../admin/pages/AddFood';
+import FoodLists from '../admin/pages/FoodLists'
 // (Optional) Other admin pages can be imported too
 
 const router = createBrowserRouter([
@@ -29,7 +31,8 @@ const router = createBrowserRouter([
     children: [
       { path: 'dashboard', element: <Dashboard /> },
       // Add more admin routes like:
-      // { path: 'users', element: <UsersPage /> },
+      { path: 'add-food-items', element: <AddFood /> },
+      { path: 'foods', element: <FoodLists /> },
     ],
   },
 ]);
