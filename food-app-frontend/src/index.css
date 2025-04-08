@@ -142,6 +142,9 @@ body {
   font-family: "Inter", sans-serif;
   transition: width 0.3s ease;
 }
+.second-bg-white{
+  background-color: #f5e7c1;
+}
 #option{
   color: gray;
   font-size: 10px;
@@ -1150,6 +1153,36 @@ main{
   height: 100vh;
   background-color:rgba(0,0,0,0.4);
   z-index: 1025;
+}
+.top_common_section{
+  background:linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../public/assets/images/hero_home_02.jpg");
+  width: 100%;
+  height: 280px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.top_common_section .content{
+  margin-top: 148px;
+  color: #fff;
+}
+.top_common_section .content h1{
+  font-size: 45px;
+  font-weight: bold;
+}
+.cartViewSection{
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.cartViewSection .container{
+  background-color: #ffffff;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 8px;
+}
+.sub_title{
+  margin-bottom: 20px;
+  font-weight: 600;
 }
 @media (min-width: 1200px) {
   .container {

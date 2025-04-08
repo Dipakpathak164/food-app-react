@@ -22,7 +22,7 @@ const FoodList = ({ imagePath, baseUrl }) => {
     setAddedItems(prev => [...prev, item.id]);
     toast.success(`${item.name} added to cart!`);
     setTimeout(() => {
-      navigate(`/product-details/${item.id}`);
+      navigate(`/cart/${item.id}`);
     }, 800); // small delay before redirecting
   };
 
@@ -67,7 +67,7 @@ const FoodList = ({ imagePath, baseUrl }) => {
                   className="btn btn_pus d-flex justify-content-center align-items-center"
                   onClick={(e) => {
                     e.stopPropagation();
-                    navigate(`/product-details/${item.id}`);
+                    navigate(`/cart/${item.id}`);
                   }}
                 >
                   <img src={`${imagePath}bag.png`} alt="cart" />

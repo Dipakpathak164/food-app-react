@@ -1,0 +1,85 @@
+import React from 'react';
+import { useCart } from '../context/CartContext';
+import { useNavigate } from 'react-router-dom';
+
+const CartPage = ({ imagePath }) => {
+  const { cart, incrementQty, decrementQty, removeFromCart } = useCart();
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    navigate('/checkout');
+  };
+
+  return (
+    <>
+     <section className='top_common_section'>
+       <div className="container">
+         <div className="row">
+            <div className="col-md-12 text-center content">
+                <h1>Your Shopping Cart</h1>
+                <p>Start your order and enjoy the tastiest burgers</p>
+            </div>
+         </div>
+       </div>
+     </section>
+     <section className='second-bg-white cartViewSection'>
+    <div className="container">
+      {cart.length > 0 ? (
+        <>
+          <h2 className='sub_title'>Your Cart</h2>
+          <ul className="list-group mb-4">
+            {cart.map((item, index) => (
+              <li key={index} className="list-group-item d-flex align-items-center justify-content-between">
+                <div className="d-flex align-items-center">
+                  <img
+                    src={`http://localhost:5000/uploads/${item.image}`}
+                    alt={item.name}
+                    style={{ width: 60, height: 60, objectFit: 'cover', marginRight: '15px' }}
+                  />
+                  <div>
+                    <strong>{item.name}</strong><br />
+                    <small>₹{item.discounted_price || item.price} × {item.quantity}</small>
+                  </div>
+                </div>
+                <div className="d-flex align-items-center">
+                  <button
+                    className="btn btn-sm btn-outline-secondary me-2"
+                    onClick={() => decrementQty(item)}
+                    disabled={item.quantity <= 1}
+                  >−</button>
+                  <span>{item.quantity}</span>
+                  <button
+                    className="btn btn-sm btn-outline-secondary ms-2"
+                    onClick={() => incrementQty(item)}
+                  >+</button>
+                  <button
+                    className="btn btn-sm btn-outline-danger ms-3"
+                    onClick={() => removeFromCart(item)}
+                  >Remove</button>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <div className="text-end">
+            <button className="btn btn-primary" onClick={handleCheckout}>
+              Proceed to Checkout
+            </button>
+          </div>
+        </>
+      ) : (
+        <div className="text-center">
+          <img
+            src={`${imagePath}abandoned-cart.png`}
+            alt="Empty Cart"
+            style={{ marginBottom: '1rem', opacity: 0.6 }}
+          />
+          <p>Your cart is empty.</p>
+        </div>
+      )}
+    </div>
+    </section>
+    </>
+  );
+};
+
+export default CartPage;
