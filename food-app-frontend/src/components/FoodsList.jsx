@@ -18,13 +18,14 @@ const FoodList = ({ imagePath, baseUrl }) => {
 
   const handleAddToCart = (e, item) => {
     e.stopPropagation();
-    addToCart(item);
+    addToCart({ ...item, quantity: 1 }); // ✅ Add default quantity here
     setAddedItems(prev => [...prev, item.id]);
     toast.success(`${item.name} added to cart!`);
     setTimeout(() => {
       navigate(`/cart/${item.id}`);
-    }, 800); // small delay before redirecting
+    }, 800);
   };
+  
 
   return (
     <div className="row">

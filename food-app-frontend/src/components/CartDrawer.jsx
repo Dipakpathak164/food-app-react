@@ -37,10 +37,22 @@ const CartDrawer = ({ imagePath, isOpen, onClose }) => {
                 ))}
               </ul>
               <div className="d-flex justify-content-between">
-                <button className="btn btn-outline-secondary w-100 me-2" onClick={() => navigate('/cart')}>
+                <button
+                  className="btn btn-outline-secondary w-100 me-2"
+                  onClick={() => {
+                    onClose();
+                    setTimeout(() => navigate('/cart'), 300); // optional delay
+                  }}
+                >
                   View Cart
                 </button>
-                <button className="btn btn-primary w-100" onClick={() => navigate('/checkout')}>
+                <button
+                  className="btn unique-button w-100"
+                  onClick={() => {
+                    onClose();
+                    setTimeout(() => navigate('/cart'), 300); // optional delay
+                  }}
+                >
                   Checkout
                 </button>
               </div>

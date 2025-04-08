@@ -9,11 +9,11 @@ const cartReducer = (state, action) => {
       if (existingItem) {
         return state.map(item =>
           item.id === action.payload.id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: item.quantity + action.payload.quantity } // ✅ Use actual quantity
             : item
         );
       } else {
-        return [...state, { ...action.payload, quantity: 1 }];
+        return [...state, { ...action.payload, quantity: action.payload.quantity }]; // ✅ Use actual quantity
       }
     }
 
@@ -52,7 +52,9 @@ export const CartProvider = ({ children }) => {
   const decrementQty = (food) => dispatch({ type: 'DECREMENT_QUANTITY', payload: food });
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, incrementQty, decrementQty }}>
+    <CartContext.Provider
+      value={{ cart, addToCart, removeFromCart, clearCart, incrementQty, decrementQty }}
+    >
       {children}
     </CartContext.Provider>
   );

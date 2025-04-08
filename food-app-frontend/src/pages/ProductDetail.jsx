@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { useCart } from '../context/CartContext'; // adjust the path
+import { useCart } from '../context/CartContext';
 import axios from 'axios';
+import toast from 'react-hot-toast'; // 👈 import toast
+import { useNavigate } from 'react-router-dom'; 
 
 const ProductDetails = ({ imagePath = '/assets/images/' }) => {
-  const { id } = useParams(); // get product ID from route
+  const navigate = useNavigate();
+  const { id } = useParams();
   const { addToCart } = useCart();
 
   const [product, setProduct] = useState(null);
@@ -18,19 +21,6 @@ const ProductDetails = ({ imagePath = '/assets/images/' }) => {
       .catch(err => console.error(err));
   }, [id]);
 
-  useEffect(() => {
-    if (!id) return;
-  
-    axios.get(`http://localhost:5000/api/foods/${id}`)
-      .then(res => {
-        console.log('Fetched product:', res.data);
-        setProduct(res.data);
-      })
-      .catch(err => console.error('Failed to fetch product:', err));
-  }, [id]);
-  
-
-  // Zoom Effect
   const handleZoom = (e) => {
     if (window.innerWidth <= 768) return;
     const mainImage = mainImageRef.current;
@@ -63,6 +53,16 @@ const ProductDetails = ({ imagePath = '/assets/images/' }) => {
   const handleAddToCart = () => {
     if (product) {
       addToCart({ ...product, quantity });
+  
+      toast.success('Your cart has been updated!', {
+        duration: 3000,
+        icon: '🛒',
+      });
+  
+      // 👇 Redirect after a short delay (optional)
+      setTimeout(() => {
+        navigate(`/cart/${product.id}`);
+      }, 800); // Delay allows user to see the toast briefly
     }
   };
 
@@ -73,7 +73,7 @@ const ProductDetails = ({ imagePath = '/assets/images/' }) => {
       <section className="product_details_wrapper mt-5">
         <div className="product_details_inner container">
           <div className="row">
-            {/* Left Column: Product Images */}
+            {/* Images */}
             <div className="col-md-6">
               <div className="product-image-box">
                 <div className="main-image position-relative">
@@ -90,14 +90,12 @@ const ProductDetails = ({ imagePath = '/assets/images/' }) => {
               </div>
             </div>
 
-            {/* Right Column: Product Details */}
+            {/* Details */}
             <div className="col-md-6 d-flex align-items-center ps-md-4 pe-md-0">
               <div className="product-details">
                 <h2>{product.name}</h2>
                 <div className="price_display d-flex align-items-center">
-                  <span className="discount">
-                    ₹{product.discounted_price || product.price}
-                  </span>
+                  <span className="discount">₹{product.discounted_price || product.price}</span>
                 </div>
 
                 <div className="prod_desc">
@@ -133,7 +131,7 @@ const ProductDetails = ({ imagePath = '/assets/images/' }) => {
             </div>
           </div>
 
-          {/* Description Section */}
+          {/* Description */}
           <div className="row mt-4">
             <div className="col-md-12 description">
               <h3>Description</h3>

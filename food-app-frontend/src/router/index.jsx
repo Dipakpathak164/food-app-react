@@ -25,6 +25,7 @@ const router = createBrowserRouter([
       { path: 'signup', element: <SignUp /> },
       { path: 'signin', element: <SignInForm /> },
       { path: 'product-details/:id', element: <ProductDetails /> }, 
+      { path: 'cart', element: <CartPage imagePath="/assets/images/" /> },
       { path: 'cart/:id', element: <CartPage  imagePath="/assets/images/"/> },
     ],
   },

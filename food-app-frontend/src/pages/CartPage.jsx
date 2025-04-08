@@ -1,6 +1,7 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const CartPage = ({ imagePath }) => {
   const { cart, incrementQty, decrementQty, removeFromCart } = useCart();
@@ -43,25 +44,34 @@ const CartPage = ({ imagePath }) => {
                 </div>
                 <div className="d-flex align-items-center">
                   <button
-                    className="btn btn-sm btn-outline-secondary me-2"
+                    className="btn btn-sm addRemoveBtn me-2"
                     onClick={() => decrementQty(item)}
                     disabled={item.quantity <= 1}
-                  >−</button>
+                  >
+                    <img src={`${imagePath}minus-sign.png`} alt="" />
+                  </button>
                   <span>{item.quantity}</span>
                   <button
-                    className="btn btn-sm btn-outline-secondary ms-2"
+                    className="btn btn-sm  addRemoveBtn ms-2"
                     onClick={() => incrementQty(item)}
-                  >+</button>
+                  >
+                    <img src={`${imagePath}plus2.png`} alt="" />
+                  </button>
                   <button
-                    className="btn btn-sm btn-outline-danger ms-3"
-                    onClick={() => removeFromCart(item)}
-                  >Remove</button>
+  className="btn btn-sm btn-outline-danger ms-3"
+  onClick={() => {
+    removeFromCart(item);
+    toast.success(`${item.name} removed from cart`);
+  }}
+>
+  Remove
+</button>
                 </div>
               </li>
             ))}
           </ul>
           <div className="text-end">
-            <button className="btn btn-primary" onClick={handleCheckout}>
+            <button className="btn unique-button" onClick={handleCheckout}>
               Proceed to Checkout
             </button>
           </div>

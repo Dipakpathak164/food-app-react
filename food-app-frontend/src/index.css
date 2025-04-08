@@ -1184,6 +1184,19 @@ main{
   margin-bottom: 20px;
   font-weight: 600;
 }
+button.addRemoveBtn{
+  border: 1px solid #363d43;
+  opacity: 1;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+button.addRemoveBtn:focus{
+  border: 1px solid #363d43;
+}
+button.addRemoveBtn:hover{
+  border: 1px solid var(--main-color-red);
+}
 @media (min-width: 1200px) {
   .container {
       max-width: 1180px;
