@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import CartIcon from './CartIcon';
 
-const Navbar = ({ baseUrl = '/', imagePath = '/assets/images/' }) => {
+const Navbar = ({setCartOpen, baseUrl = '/', imagePath = '/assets/images/' }) => {
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -106,7 +106,7 @@ const Navbar = ({ baseUrl = '/', imagePath = '/assets/images/' }) => {
                     <a href="#" className="btn unique-button unique-button-border">Menu</a>
                   </li>
                   <li>
-                    <CartIcon imagePath={imagePath} />
+                    <CartIcon imagePath={imagePath} setCartOpen={setCartOpen} />
                   </li>
                 </ul>
 
