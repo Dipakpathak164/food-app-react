@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useCart } from '../context/CartContext'; // Adjust if path differs
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast'; // make sure you're using react-hot-toast
 
 const FoodList = ({ imagePath, baseUrl }) => {
   const [foods, setFoods] = useState([]);
+  const [addedItems, setAddedItems] = useState([]); // to track added items
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
@@ -13,6 +15,16 @@ const FoodList = ({ imagePath, baseUrl }) => {
       .then(res => setFoods(res.data))
       .catch(err => console.error('Failed to fetch foods:', err));
   }, []);
+
+  const handleAddToCart = (e, item) => {
+    e.stopPropagation();
+    addToCart(item);
+    setAddedItems(prev => [...prev, item.id]);
+    toast.success(`${item.name} added to cart!`);
+    setTimeout(() => {
+      navigate(`/product-details/${item.id}`);
+    }, 800); // small delay before redirecting
+  };
 
   return (
     <div className="row">
@@ -43,15 +55,24 @@ const FoodList = ({ imagePath, baseUrl }) => {
               <small>{item.weight || '220gr / 600 cal'}</small>
             </div>
             <div className="check_btns">
-              <button
-                className="btn btn_pus d-flex justify-content-center align-items-center"
-                onClick={(e) => {
-                  e.stopPropagation(); // prevent navigation
-                  addToCart(item);
-                }}
-              >
-                <img src={`${imagePath}plus.png`} alt="plus" />
-              </button>
+              {!addedItems.includes(item.id) ? (
+                <button
+                  className="btn btn_pus d-flex justify-content-center align-items-center"
+                  onClick={(e) => handleAddToCart(e, item)}
+                >
+                  <img src={`${imagePath}plus.png`} alt="plus" />
+                </button>
+              ) : (
+                <button
+                  className="btn btn_pus d-flex justify-content-center align-items-center"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/product-details/${item.id}`);
+                  }}
+                >
+                  <img src={`${imagePath}bag.png`} alt="cart" />
+                </button>
+              )}
             </div>
           </div>
         </div>

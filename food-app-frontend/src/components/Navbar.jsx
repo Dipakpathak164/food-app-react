@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import CartIcon from './CartIcon';
 
 const Navbar = ({ baseUrl = '/', imagePath = '/assets/images/' }) => {
   const location = useLocation();
@@ -100,9 +101,12 @@ const Navbar = ({ baseUrl = '/', imagePath = '/assets/images/' }) => {
                   </li>
                 </ul>
 
-                <ul>
-                  <li className="me-md-3">
+                <ul className='d-flex align-items-center'>
+                  <li className="">
                     <a href="#" className="btn unique-button unique-button-border">Menu</a>
+                  </li>
+                  <li>
+                    <CartIcon imagePath={imagePath} />
                   </li>
                 </ul>
 

@@ -683,7 +683,7 @@ div.bar3 {
   transition: 0.35s ease-in-out;
 }
 .item_cards .cards_footer .check_btns .btn_pus:hover img{
-  transform: scale(1.4) rotate(180deg);
+  transform: scale(1.4);
 }
 .promo_section{
   background-color: #f5e7c1;
@@ -1084,6 +1084,21 @@ main{
 }
 .dropdown-menu_menu {
   margin-bottom: 16px;
+}
+.cart_count{
+  position: relative;
+  display: inline-block;
+}
+.cart_count img{
+  width: 50px;
+}
+.count_value{
+  position: absolute;
+  top: 20px;
+  left: 21px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #ffffff;
 }
 @media (min-width: 1200px) {
   .container {
