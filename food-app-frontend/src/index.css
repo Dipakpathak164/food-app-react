@@ -1100,6 +1100,35 @@ main{
   font-size: 14px;
   color: #ffffff;
 }
+/* components/CartDrawer.css */
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  height: 100%;
+  width: 350px;
+  background: #fff;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
+  transition: right 0.3s ease-in-out;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.cart-drawer.open {
+  right: 0;
+}
+
+.cart-drawer-header {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.cart-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+}
+
 @media (min-width: 1200px) {
   .container {
       max-width: 1180px;
