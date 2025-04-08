@@ -5,6 +5,7 @@ import App from '../App';
 import Home from '../pages/Home';
 import SignUp from '../auth/SignupForm';
 import SignInForm from '../auth/SignInForm';
+import ProductDetails from '../pages/ProductDetail';
 
 // Admin
 import AdminLayout from '../admin/AdminLayout';
@@ -22,6 +23,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home imagePath="/assets/images/" baseUrl="/" /> },
       { path: 'signup', element: <SignUp /> },
       { path: 'signin', element: <SignInForm /> },
+      { path: 'product-details/:id', element: <ProductDetails /> }, 
     ],
   },
 
