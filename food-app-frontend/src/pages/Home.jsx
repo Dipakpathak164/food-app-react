@@ -1,4 +1,5 @@
 import React from 'react';
+import FoodList from '../components/FoodsList'; 
 
 const Home = ({ imagePath, baseUrl }) => {
   return (
@@ -23,43 +24,11 @@ const Home = ({ imagePath, baseUrl }) => {
               <h2>Bestsellers</h2>
             </div>
           </div>
-          <div className="row">
-            {[
-              { title: "Bacon+Cheese +Green Burger", price: "$6.00", img: "product_01.jpg" },
-              { title: "Black Angus Burger", price: "$12.00", img: "product_02.jpg" },
-              { title: "Bøfsandwich", price: "$8.00", img: "product_02.jpg" },
-              { title: "Bacon+Cheese +Green Burger", price: "$6.00", img: "product_01.jpg" },
-              { title: "Black Angus Burger", price: "$12.00", img: "product_02.jpg" },
-              { title: "Bøfsandwich", price: "$8.00", img: "product_02.jpg" },
-              { title: "Bacon+Cheese +Green Burger", price: "$6.00", img: "product_01.jpg" },
-              { title: "Black Angus Burger", price: "$12.00", img: "product_02.jpg" },
-              { title: "Bøfsandwich", price: "$8.00", img: "product_02.jpg" },
-            ].map((item, i) => (
-              <div className="col-md-4 item_cards position-relative" key={i}>
-                <a href={`${baseUrl}product-details`} className="cards d-inline-flex w-100">
-                  <div className="cards_header">
-                    <h5>Category</h5>
-                    <h3>{item.title}</h3>
-                  </div>
-                  <div className="cards_body">
-                    <img src={`${imagePath}${item.img}`} alt={item.img} />
-                  </div>
-                </a>
-                <div className="cards_footer d-flex align-items-center justify-content-between">
-                  <div className="price">
-                    <p>{item.price}</p>
-                    <small>220gr / 600 cal</small>
-                  </div>
-                  <div className="check_btns">
-                    <button className="btn btn_pus d-flex justify-content-center align-items-center">
-                      <img src={`${imagePath}plus.png`} alt="plus" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+
+          {/* 🧠 New dynamic food listing */}
+          <FoodList imagePath={imagePath} baseUrl={baseUrl} />
         </div>
+
         <img src={`${imagePath}wave.svg`} className="w-100" alt="wave" />
       </section>
 
