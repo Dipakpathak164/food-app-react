@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer, useEffect } from 'react';
 
 const CartContext = createContext();
 
@@ -9,11 +9,11 @@ const cartReducer = (state, action) => {
       if (existingItem) {
         return state.map(item =>
           item.id === action.payload.id
-            ? { ...item, quantity: item.quantity + action.payload.quantity } // ✅ Use actual quantity
+            ? { ...item, quantity: item.quantity + action.payload.quantity }
             : item
         );
       } else {
-        return [...state, { ...action.payload, quantity: action.payload.quantity }]; // ✅ Use actual quantity
+        return [...state, { ...action.payload, quantity: action.payload.quantity }];
       }
     }
 
@@ -42,8 +42,24 @@ const cartReducer = (state, action) => {
   }
 };
 
+// ✅ Lazy load from localStorage during initial render
+const getInitialCart = () => {
+  try {
+    const storedCart = localStorage.getItem('cart');
+    return storedCart ? JSON.parse(storedCart) : [];
+  } catch (error) {
+    console.error('Failed to parse cart from localStorage:', error);
+    return [];
+  }
+};
+
 export const CartProvider = ({ children }) => {
-  const [cart, dispatch] = useReducer(cartReducer, []);
+  const [cart, dispatch] = useReducer(cartReducer, [], getInitialCart);
+
+  // ✅ Save cart to localStorage on change
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
 
   const addToCart = (food) => dispatch({ type: 'ADD_TO_CART', payload: food });
   const removeFromCart = (food) => dispatch({ type: 'REMOVE_FROM_CART', payload: food });
