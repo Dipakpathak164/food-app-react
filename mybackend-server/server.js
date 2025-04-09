@@ -3,7 +3,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/auth');
-const foodRoutes = require('./routes/foodRoutes'); // ✅ Import food routes
+const foodRoutes = require('./routes/foodRoutes'); 
+const orderRoutes = require('./routes/order')
 require('./initDB'); // 💡 This initializes DB tables & inserts default admin
 
 dotenv.config();
@@ -26,7 +27,8 @@ app.use('/uploads', express.static('uploads'));
 
 // Routes
 app.use('/api/auth', authRoutes);       // Existing auth routes
-app.use('/api/foods', foodRoutes);      // ✅ New food routes
+app.use('/api/foods', foodRoutes); 
+app.use('/api/place-order', orderRoutes);     
 
 // Start server
 const PORT = process.env.PORT || 5000;

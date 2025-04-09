@@ -9,43 +9,58 @@ const jwt = require('jsonwebtoken'); // make sure this is imported
 const secretKey = process.env.JWT_SECRET;
 // move this to .env in real projects
 
-  router.post('/signup', async (req, res) => {
+router.post('/signup', async (req, res) => {
   const { name, email, password } = req.body;
 
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
   db.query('SELECT * FROM users WHERE email = ?', [email], async (err, result) => {
-    if (err) return res.status(500).json({ message: 'Database error' });
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Database error' });
+    }
 
     if (result.length > 0) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-    db.query(
-      'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-      [name, email, hashedPassword],
-      (err, insertResult) => {
-        if (err) return res.status(500).json({ message: 'Error registering user' });
-
-        const userId = insertResult.insertId;
-
-        // Fetch the inserted user details
-        db.query('SELECT id, name, email FROM users WHERE id = ?', [userId], (err, userResult) => {
-          if (err || userResult.length === 0) {
-            return res.status(500).json({ message: 'User creation failed' });
+      db.query(
+        'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
+        [name, email, hashedPassword],
+        (err, insertResult) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Error registering user' });
           }
 
-          const user = userResult[0];
-          const token = jwt.sign({ id: user.id, email: user.email }, secretKey, { expiresIn: '7d' });
+          const userId = insertResult.insertId;
 
-          return res.status(201).json({
-            message: 'Signup successful',
-            token,
-            user
+          db.query('SELECT id, name, email FROM users WHERE id = ?', [userId], (err, userResult) => {
+            if (err || userResult.length === 0) {
+              console.error(err);
+              return res.status(500).json({ message: 'User creation failed' });
+            }
+
+            const user = userResult[0];
+            const token = jwt.sign({ id: user.id, email: user.email }, secretKey, { expiresIn: '7d' });
+
+            return res.status(201).json({
+              message: 'Signup successful',
+              token,
+              user
+            });
           });
-        });
-      }
-    );
+        }
+      );
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Server error' });
+    }
   });
 });
 

@@ -1,15 +1,82 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import TopSection from '../components/TopSection';
 
 const Checkout = () => {
-    const { cart } = useCart();
+    const { cart, clearCart } = useCart();
+    const navigate = useNavigate();
+
     const [shipToDifferent, setShipToDifferent] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState('cod');
+
+    const [formData, setFormData] = useState({
+        email: '',
+        phone: '',
+        fullName: '',
+        country: 'India',
+        state: '',
+        city: '',
+        zip: '',
+        address: '',
+    });
+
+    const [shippingData, setShippingData] = useState({
+        fullName: '',
+        country: 'India',
+        state: '',
+        city: '',
+        zip: '',
+        address: '',
+    });
 
     const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     const countries = ['India', 'United States', 'Canada', 'United Kingdom', 'Australia'];
+
+    const handleInputChange = (e, isShipping = false) => {
+        const { name, value } = e.target;
+        if (isShipping) {
+            setShippingData(prev => ({ ...prev, [name]: value }));
+        } else {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const payload = {
+            user: formData,
+            shipping: shipToDifferent ? shippingData : formData,
+            cart,
+            totalAmount,
+            paymentMethod,
+        };
+
+        try {
+            const res = await fetch('/api/place-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                localStorage.setItem('token', data.token); // auto-login
+                clearCart(); // optional: clear cart after order placed
+                navigate('/set-password'); // redirect to set password
+            } else {
+                alert(data.message || 'Something went wrong.');
+            }
+        } catch (err) {
+            console.error('Error placing order:', err);
+            alert('Failed to place order. Try again.');
+        }
+    };
 
     return (
         <>
@@ -21,25 +88,52 @@ const Checkout = () => {
                 <div className="container p-5">
                     <h2 className="mb-4">Checkout</h2>
 
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         {/* Billing Details */}
                         <h5 className="mb-3">Billing Details</h5>
                         <div className="row g-3 mb-4">
                             <div className="col-md-6">
                                 <label>Email *</label>
-                                <input type="email" className="form-control" required />
+                                <input
+                                    type="email"
+                                    className="form-control"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    required
+                                />
                             </div>
                             <div className="col-md-6">
                                 <label>Phone *</label>
-                                <input type="tel" className="form-control" required />
+                                <input
+                                    type="tel"
+                                    className="form-control"
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleInputChange}
+                                    required
+                                />
                             </div>
                             <div className="col-md-6">
                                 <label>Full Name *</label>
-                                <input type="text" className="form-control" required />
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="fullName"
+                                    value={formData.fullName}
+                                    onChange={handleInputChange}
+                                    required
+                                />
                             </div>
                             <div className="col-md-6">
                                 <label>Country *</label>
-                                <select className="form-select" required>
+                                <select
+                                    className="form-select"
+                                    name="country"
+                                    value={formData.country}
+                                    onChange={handleInputChange}
+                                    required
+                                >
                                     {countries.map((country, i) => (
                                         <option key={i}>{country}</option>
                                     ))}
@@ -47,19 +141,47 @@ const Checkout = () => {
                             </div>
                             <div className="col-md-6">
                                 <label>State *</label>
-                                <input type="text" className="form-control" required />
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="state"
+                                    value={formData.state}
+                                    onChange={handleInputChange}
+                                    required
+                                />
                             </div>
                             <div className="col-md-6">
                                 <label>Town / City *</label>
-                                <input type="text" className="form-control" required />
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="city"
+                                    value={formData.city}
+                                    onChange={handleInputChange}
+                                    required
+                                />
                             </div>
                             <div className="col-md-6">
                                 <label>ZIP *</label>
-                                <input type="text" className="form-control" required />
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="zip"
+                                    value={formData.zip}
+                                    onChange={handleInputChange}
+                                    required
+                                />
                             </div>
                             <div className="col-12">
                                 <label>Street Address *</label>
-                                <input type="text" className="form-control" required />
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="address"
+                                    value={formData.address}
+                                    onChange={handleInputChange}
+                                    required
+                                />
                             </div>
                         </div>
 
@@ -82,31 +204,72 @@ const Checkout = () => {
                                 <div className="row g-3 mb-4">
                                     <div className="col-md-6">
                                         <label>Full Name *</label>
-                                        <input type="text" className="form-control" required />
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="fullName"
+                                            value={shippingData.fullName}
+                                            onChange={(e) => handleInputChange(e, true)}
+                                            required
+                                        />
                                     </div>
                                     <div className="col-md-6">
                                         <label>Country *</label>
-                                        <select className="form-select" required>
+                                        <select
+                                            className="form-select"
+                                            name="country"
+                                            value={shippingData.country}
+                                            onChange={(e) => handleInputChange(e, true)}
+                                            required
+                                        >
                                             {countries.map((country, i) => (
                                                 <option key={i}>{country}</option>
                                             ))}
                                         </select>
                                     </div>
                                     <div className="col-md-6">
-                                        <label>State / Province *</label>
-                                        <input type="text" className="form-control" required />
+                                        <label>State *</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="state"
+                                            value={shippingData.state}
+                                            onChange={(e) => handleInputChange(e, true)}
+                                            required
+                                        />
                                     </div>
                                     <div className="col-md-6">
                                         <label>Town / City *</label>
-                                        <input type="text" className="form-control" required />
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="city"
+                                            value={shippingData.city}
+                                            onChange={(e) => handleInputChange(e, true)}
+                                            required
+                                        />
                                     </div>
                                     <div className="col-md-6">
-                                        <label>ZIP / Postal Code *</label>
-                                        <input type="text" className="form-control" required />
+                                        <label>ZIP *</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="zip"
+                                            value={shippingData.zip}
+                                            onChange={(e) => handleInputChange(e, true)}
+                                            required
+                                        />
                                     </div>
                                     <div className="col-12">
                                         <label>Street Address *</label>
-                                        <input type="text" className="form-control" required />
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="address"
+                                            value={shippingData.address}
+                                            onChange={(e) => handleInputChange(e, true)}
+                                            required
+                                        />
                                     </div>
                                 </div>
                             </>

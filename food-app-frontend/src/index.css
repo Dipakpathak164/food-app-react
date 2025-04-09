@@ -1221,6 +1221,16 @@ button.addRemoveBtn:hover{
   height: 200px;
   bottom: 0;
 }
+.cartButtons{
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  padding:15px 15px 0 15px;
+  border-top: 1px solid #e2e2e2;
+  z-index: 2;
+}
 @media (min-width: 1200px) {
   .container {
       max-width: 1180px;

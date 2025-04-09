@@ -27,7 +27,24 @@ const App = () => {
       {/* Pass toggle to Navbar */}
       <Navbar setCartOpen={setIsCartOpen} />
 
-      <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+      <Toaster
+        position="center" // Use any position; we'll override it with styles
+        toastOptions={{
+          duration: 3000,
+          style: {
+            // Optional: style the toast itself
+            background: '#14A44D ',
+            color: '#fff',
+            fontWeight:'bold',
+          },
+        }}
+        containerStyle={{
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          position: 'fixed',
+        }}
+      />
 
       <main>
         <Outlet />
