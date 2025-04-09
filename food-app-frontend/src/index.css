@@ -1231,6 +1231,14 @@ button.addRemoveBtn:hover{
   border-top: 1px solid #e2e2e2;
   z-index: 2;
 }
+label{
+  display: block;
+  margin-bottom: 12px;
+}
+.form-control:focus{
+  border: 1px solid var(--main-color-red);
+  box-shadow: none;
+}
 @media (min-width: 1200px) {
   .container {
       max-width: 1180px;

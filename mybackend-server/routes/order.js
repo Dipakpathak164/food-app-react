@@ -1,45 +1,48 @@
-// routes/order.js
 const express = require('express');
 const router = express.Router();
+const db = require('../config/db');
 const jwt = require('jsonwebtoken');
-const db = require('../config/db');// adjust path as per your DB connection
 
+// ❌ Don't need this here:
+// router.use(express.json()); 
+// ✅ Keep express.json() in your main server.js or app.js
 
-router.post('/place-order', async (req, res) => {
-  try {
+router.post('/', async (req, res) => {
     const { user, shipping, cart, totalAmount, paymentMethod } = req.body;
+    const shipToDifferent = JSON.stringify(user) !== JSON.stringify(shipping);
 
-    // Basic validation
-    if (!user?.email || !cart?.length || !totalAmount) {
-      return res.status(400).json({ message: 'Incomplete order details' });
-    }
+    try {
+        // Insert into orders
+        const [orderResult] = await db.execute(`
+            INSERT INTO orders (
+                billing_email, billing_phone, billing_full_name, billing_country, billing_state, billing_city, billing_zip, billing_address,
+                shipping_full_name, shipping_country, shipping_state, shipping_city, shipping_zip, shipping_address,
+                ship_to_different, payment_method, total_amount
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `, [
+            user.email, user.phone, user.fullName, user.country, user.state, user.city, user.zip, user.address,
+            shipping.fullName, shipping.country, shipping.state, shipping.city, shipping.zip, shipping.address,
+            shipToDifferent, paymentMethod, totalAmount
+        ]);
 
-    const orderDetails = {
-      shipping,
-      cart,
-    };
+        const orderId = orderResult.insertId;
 
-    db.query(
-      'INSERT INTO orders (user_email, details, total_amount, payment_method) VALUES (?, ?, ?, ?)',
-      [user.email, JSON.stringify(orderDetails), totalAmount, paymentMethod],
-      (err, result) => {
-        if (err) {
-          console.error('DB insert error:', err);
-          return res.status(500).json({ message: 'Order could not be placed' });
-        }
-
-        // Create a token for guest user or future reference
-        const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET || 'fallback_secret', {
-          expiresIn: '7d',
+        // Insert items
+        const itemInsertPromises = cart.map(item => {
+            return db.execute(`
+                INSERT INTO order_items (order_id, item_name, item_price, item_quantity)
+                VALUES (?, ?, ?, ?)
+            `, [orderId, item.name, item.price, item.quantity]);
         });
 
-        return res.status(200).json({ message: 'Order placed successfully', token });
-      }
-    );
-  } catch (error) {
-    console.error('Order placement error:', error);
-    return res.status(500).json({ message: 'Internal server error' });
-  }
+        await Promise.all(itemInsertPromises);
+
+        res.status(200).json({ message: 'Order placed!', token: 'authtoken' }); // optional token
+    } catch (error) {
+        console.error('Error placing order:', error);
+        res.status(500).json({ message: 'Failed to place order' });
+    }
 });
 
 module.exports = router;

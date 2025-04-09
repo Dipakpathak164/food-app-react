@@ -25,6 +25,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // ✅ Serve uploaded images statically
 app.use('/uploads', express.static('uploads'));
 
+app.use((req, res, next) => {
+  console.log(`🔍 Incoming request: ${req.method} ${req.originalUrl}`);
+  next();
+});
+
 // Routes
 app.use('/api/auth', authRoutes);       // Existing auth routes
 app.use('/api/foods', foodRoutes); 
