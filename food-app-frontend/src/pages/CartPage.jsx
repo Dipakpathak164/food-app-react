@@ -3,6 +3,7 @@ import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import TopSection from '../components/TopSection';
 
 const CartPage = ({ imagePath }) => {
     const { cart, incrementQty, decrementQty, removeFromCart } = useCart();
@@ -14,16 +15,10 @@ const CartPage = ({ imagePath }) => {
 
     return (
         <>
-            <section className='top_common_section'>
-                <div className="container">
-                    <div className="row">
-                        <div className="col-md-12 text-center content">
-                            <h1>Your Shopping Cart</h1>
-                            <p>Start your order and enjoy the tastiest burgers</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <TopSection
+                title="Your Shopping Cart"
+                subtitle="Start your order and enjoy the tastiest burgers"
+            />
             <section className='second-bg-white cartViewSection'>
                 <div className="container">
                     {cart.length > 0 ? (

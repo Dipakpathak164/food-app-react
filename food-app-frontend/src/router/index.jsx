@@ -7,6 +7,7 @@ import SignUp from '../auth/SignupForm';
 import SignInForm from '../auth/SignInForm';
 import ProductDetails from '../pages/ProductDetail';
 import CartPage from '../pages/CartPage';
+import CheckoutPage from '../pages/Checkout';
 
 // Admin
 import AdminLayout from '../admin/AdminLayout';
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
       { path: 'product-details/:id', element: <ProductDetails /> }, 
       { path: 'cart', element: <CartPage imagePath="/assets/images/" /> },
       { path: 'cart/:id', element: <CartPage  imagePath="/assets/images/"/> },
+      { path: 'checkout', element: <CheckoutPage imagePath="/assets/images/" /> },
     ],
   },
 
