@@ -46,7 +46,7 @@ const Checkout = () => {
         e.preventDefault();
     
         // Check if user is logged in by checking the auth token
-        const token = localStorage.getItem('authToken'); // or use a global state
+        const token = localStorage.getItem('token'); // or use a global state
         if (!token) {
             alert("Please log in to continue your order or sign up.");
             navigate('/login');  // Redirect to login if not logged in
