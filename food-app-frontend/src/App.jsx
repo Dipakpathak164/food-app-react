@@ -31,12 +31,6 @@ const App = () => {
         position="center" // Use any position; we'll override it with styles
         toastOptions={{
           duration: 3000,
-          style: {
-            // Optional: style the toast itself
-            background: '#14A44D ',
-            color: '#fff',
-            fontWeight:'bold',
-          },
         }}
         containerStyle={{
           top: '50%',

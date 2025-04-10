@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import TopSection from '../components/TopSection';
+import toast from 'react-hot-toast';
+
 
 const Checkout = () => {
     const { cart, clearCart } = useCart();
@@ -35,32 +37,45 @@ const Checkout = () => {
 
     const handleInputChange = (e, isShipping = false) => {
         const { name, value } = e.target;
+
+        // For phone field: allow only digits and max 10
+        if (name === 'phone') {
+            if (!/^\d{0,10}$/.test(value)) return; // ignore non-digit or more than 10
+        }
+
+        if (name === 'zip') {
+            if (!/^\d{0,6}$/.test(value)) return; // ignore non-digit or more than 10
+        }
+
         if (isShipping) {
             setShippingData(prev => ({ ...prev, [name]: value }));
         } else {
             setFormData(prev => ({ ...prev, [name]: value }));
         }
     };
-    
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        // Check if user is logged in by checking the auth token
-        const token = localStorage.getItem('token'); // or use a global state
-        if (!token) {
-            alert("Please log in to continue your order or sign up.");
-            navigate('/login');  // Redirect to login if not logged in
-            return;  // Stop further execution if not logged in
-        }
-    
-        // Check if the cart has items before proceeding
+
+        // Check if cart has items
         if (cart.length === 0) {
-            alert("Your cart is empty. Please add items to the cart before placing the order.");
-            return;  // Prevent order submission if the cart is empty
+            toast.error("Your cart is empty. Please add items before placing the order.");
+            navigate('/');
+            return;
         }
-    
+
+        // Check if user is logged in
+        const token = localStorage.getItem('token');
+        if (!token) {
+            toast.error("Please log in to continue your order or sign up.");
+            navigate('/signin');
+            return;
+        }
+
+
         console.log('Token found:', token); // Debugging line to ensure token is being retrieved
-    
+
         const orderData = {
             billingDetails: formData,
             shippingDetails: shipToDifferent ? shippingData : formData,
@@ -73,7 +88,7 @@ const Checkout = () => {
             })),
             totalAmount
         };
-    
+
         try {
             // Send request with token in headers
             const res = await fetch('http://localhost:5000/api/place-order', {
@@ -84,11 +99,11 @@ const Checkout = () => {
                 },
                 body: JSON.stringify(orderData)
             });
-    
+
             const data = await res.json();
-    
+
             if (res.ok) {
-                alert(data.message);
+                toast.success(data.message || 'Order placed successfully!');
                 clearCart();
                 navigate('/thank-you');
             } else {
@@ -96,16 +111,16 @@ const Checkout = () => {
             }
         } catch (err) {
             console.error(err);
-            alert('An error occurred while placing the order.');
+            toast.error(data.message || 'Order failed. Please try again.');
         }
     };
-    
-    
-    
-    
-    
-    
-     
+
+
+
+
+
+
+
     return (
         <>
             <TopSection
@@ -140,8 +155,12 @@ const Checkout = () => {
                                         name="phone"
                                         value={formData.phone}
                                         onChange={handleInputChange}
+                                        maxLength="10"
+                                        pattern="\d{10}"
+                                        inputMode="numeric"
                                         required
                                     />
+
                                 </div>
                                 <div className="col-md-6">
                                     <label>Full Name *</label>
@@ -196,7 +215,10 @@ const Checkout = () => {
                                         type="text"
                                         className="form-control"
                                         name="zip"
+                                        inputMode="numeric"
                                         value={formData.zip}
+                                        maxLength="10"
+
                                         onChange={handleInputChange}
                                         required
                                     />

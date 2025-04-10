@@ -31,7 +31,7 @@ const SignInForm = () => {
 
         if (token && user) {
             // Store the token and user data in localStorage (or sessionStorage if preferred)
-            localStorage.setItem('authToken', token);  // Store the token
+            localStorage.setItem('token', token);  // Store the token
             localStorage.setItem('user', JSON.stringify(user));  // Store the user data
 
             // Call login function (if using global state)

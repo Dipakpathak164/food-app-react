@@ -40,7 +40,7 @@ const SignupForm = () => {
     
             if (token && user) {
                 // Store the token and user data in localStorage (or sessionStorage if preferred)
-                localStorage.setItem('authToken', token);  // Store token
+                localStorage.setItem('token', token);  // Store token
                 localStorage.setItem('user', JSON.stringify(user));  // Store user data (optional)
     
                 // Call the login function if necessary
