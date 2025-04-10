@@ -23,7 +23,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
                 </li>
                 <li>
                     <NavLink
-                        to="/admin/users"
+                        to="/admin/customers"
                         className={({ isActive }) => isActive ? 'active' : ''}
                     >
                         <MdPeople className="me-2" /> <span>Customers</span>
@@ -31,7 +31,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
                 </li>
                 <li>
                     <NavLink
-                        to="/admin/settings"
+                        to="/admin/orders"
                         className={({ isActive }) => isActive ? 'active' : ''}
                     >
                         <MdShoppingCart className="me-2" /> <span>Orders</span>

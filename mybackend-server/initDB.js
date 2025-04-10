@@ -40,29 +40,31 @@ db.query(createFoodsTable, (err, result) => {
 
 const createOrdersTable = `
   CREATE TABLE IF NOT EXISTS orders (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(100) NOT NULL,
-    phone VARCHAR(20) NOT NULL,
-    full_name VARCHAR(255) NOT NULL,
-    country VARCHAR(100) DEFAULT 'India',
-    state VARCHAR(100),
-    city VARCHAR(100),
-    zip VARCHAR(20),
-    address TEXT,
-    ship_to_different BOOLEAN DEFAULT FALSE,
-    shipping_full_name VARCHAR(255),
-    shipping_country VARCHAR(100) DEFAULT 'India',
-    shipping_state VARCHAR(100),
-    shipping_city VARCHAR(100),
-    shipping_zip VARCHAR(20),
-    shipping_address TEXT,
-    payment_method ENUM('cod', 'card') DEFAULT 'cod',
-    card_number VARCHAR(20),
-    card_expiry VARCHAR(7),
-    card_cvv VARCHAR(4),
-    total_amount DECIMAL(10, 2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-  );
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NULL,  -- Ensure this allows NULL if users may not be linked to orders
+  email VARCHAR(100) NOT NULL,
+  phone VARCHAR(20) NOT NULL,
+  full_name VARCHAR(255) NOT NULL,
+  country VARCHAR(100) DEFAULT 'India',
+  state VARCHAR(100),
+  city VARCHAR(100),
+  zip VARCHAR(20),
+  address TEXT,
+  ship_to_different BOOLEAN DEFAULT FALSE,
+  shipping_full_name VARCHAR(255),
+  shipping_country VARCHAR(100) DEFAULT 'India',
+  shipping_state VARCHAR(100),
+  shipping_city VARCHAR(100),
+  shipping_zip VARCHAR(20),
+  shipping_address TEXT,
+  payment_method ENUM('cod', 'card') DEFAULT 'cod',
+  card_number VARCHAR(20),
+  card_expiry VARCHAR(7),
+  card_cvv VARCHAR(4),
+  total_amount DECIMAL(10, 2) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
 `;
 
 db.query(createOrdersTable, (err, result) => {

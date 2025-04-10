@@ -105,7 +105,7 @@ const Checkout = () => {
             if (res.ok) {
                 toast.success(data.message || 'Order placed successfully!');
                 clearCart();
-                navigate('/thank-you');
+                navigate('/');
             } else {
                 alert(data.message || 'Order failed');
             }

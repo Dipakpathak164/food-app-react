@@ -35,7 +35,7 @@ const AdminLayout = () => {
           </div>
         </div>
 
-        <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
+        <Toaster position="center" toastOptions={{ duration: 3000 }} />
 
         <div className="p-4 outer_div">
           <Outlet />
