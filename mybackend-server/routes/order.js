@@ -1,48 +1,83 @@
 const express = require('express');
 const router = express.Router();
+const authenticateToken = require('../middleware/authMiddleware'); 
 const db = require('../config/db');
-const jwt = require('jsonwebtoken');
 
 // ❌ Don't need this here:
 // router.use(express.json()); 
 // ✅ Keep express.json() in your main server.js or app.js
 
-router.post('/', async (req, res) => {
-    const { user, shipping, cart, totalAmount, paymentMethod } = req.body;
-    const shipToDifferent = JSON.stringify(user) !== JSON.stringify(shipping);
-
+router.post('/', authenticateToken, async (req, res) => {
     try {
-        // Insert into orders
-        const [orderResult] = await db.execute(`
-            INSERT INTO orders (
-                billing_email, billing_phone, billing_full_name, billing_country, billing_state, billing_city, billing_zip, billing_address,
-                shipping_full_name, shipping_country, shipping_state, shipping_city, shipping_zip, shipping_address,
-                ship_to_different, payment_method, total_amount
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `, [
-            user.email, user.phone, user.fullName, user.country, user.state, user.city, user.zip, user.address,
-            shipping.fullName, shipping.country, shipping.state, shipping.city, shipping.zip, shipping.address,
-            shipToDifferent, paymentMethod, totalAmount
-        ]);
+        const {
+            billingDetails,
+            shippingDetails,
+            paymentMethod,
+            items,
+            totalAmount
+        } = req.body;
 
-        const orderId = orderResult.insertId;
+        // Basic validation
+        if (!billingDetails || !items || items.length === 0 || !totalAmount || !paymentMethod) {
+            return res.status(400).json({ message: 'Invalid order data: Missing required fields.' });
+        }
 
-        // Insert items
-        const itemInsertPromises = cart.map(item => {
-            return db.execute(`
-                INSERT INTO order_items (order_id, item_name, item_price, item_quantity)
-                VALUES (?, ?, ?, ?)
-            `, [orderId, item.name, item.price, item.quantity]);
+        // Validate each item in the cart
+        items.forEach((item, index) => {
+            if (!item.productId || !item.quantity || !item.price) {
+                return res.status(400).json({ message: `Invalid item data at index ${index}` });
+            }
         });
 
-        await Promise.all(itemInsertPromises);
+        // Validate card payment details if payment method is 'card'
+        if (paymentMethod === 'card') {
+            if (!req.body.cardNumber || !req.body.cardExpiry || !req.body.cardCvv) {
+                return res.status(400).json({ message: 'Card payment details are missing.' });
+            }
+        }
 
-        res.status(200).json({ message: 'Order placed!', token: 'authtoken' }); // optional token
+        const shippingInfo = shippingDetails && shippingDetails.fullName ? shippingDetails : billingDetails;
+
+        // Database query to insert the order into the orders table
+        const orderQuery = `
+            INSERT INTO orders (
+                email, phone, full_name, country, state, city, zip, address,
+                ship_to_different, shipping_full_name, shipping_country, shipping_state, shipping_city, shipping_zip, shipping_address,
+                payment_method, card_number, card_expiry, card_cvv, total_amount
+            ) VALUES (
+                ?, ?, ?, ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?, ?, ?,
+                ?, ?, ?, ?, ?
+            )
+        `;
+
+        const orderData = [
+            billingDetails.email, billingDetails.phone, billingDetails.fullName, billingDetails.country, billingDetails.state, billingDetails.city, billingDetails.zip, billingDetails.address,
+            shippingDetails ? true : false, shippingInfo.fullName, shippingInfo.country, shippingInfo.state, shippingInfo.city, shippingInfo.zip, shippingInfo.address,
+            paymentMethod,
+            paymentMethod === 'card' ? req.body.cardNumber : null,
+            paymentMethod === 'card' ? req.body.cardExpiry : null,
+            paymentMethod === 'card' ? req.body.cardCvv : null,
+            totalAmount
+        ];
+
+        // Execute the query to insert the order data
+        db.query(orderQuery, orderData, (err, result) => {
+            if (err) {
+                console.error('❌ Error inserting order:', err);  // Log detailed error
+                return res.status(500).json({ message: 'Failed to place order', error: err });
+            }
+
+            console.log('🧾 Order inserted:', result);
+            return res.status(200).json({ message: 'Order placed successfully' });
+        });
+
     } catch (error) {
-        console.error('Error placing order:', error);
-        res.status(500).json({ message: 'Failed to place order' });
+        console.error('❌ Order error:', error);
+        return res.status(500).json({ message: 'Failed to place order', error: error.message });
     }
 });
+
+
 
 module.exports = router;

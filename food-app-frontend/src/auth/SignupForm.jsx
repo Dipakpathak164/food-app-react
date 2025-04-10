@@ -30,18 +30,24 @@ const SignupForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-
+    
         try {
-            // Simulate 1-second delay before API call
+            // Simulate a 1-second delay before making the API call (if needed)
             await new Promise((resolve) => setTimeout(resolve, 1000));
-
+    
             const res = await axios.post('http://localhost:5000/api/auth/signup', formData);
             const { token, user } = res.data;
-
+    
             if (token && user) {
+                // Store the token and user data in localStorage (or sessionStorage if preferred)
+                localStorage.setItem('authToken', token);  // Store token
+                localStorage.setItem('user', JSON.stringify(user));  // Store user data (optional)
+    
+                // Call the login function if necessary
                 login(token, user);
+    
                 toast.success('Thanks for signing up!');
-                navigate('/');
+                navigate('/');  // Redirect to homepage or dashboard
             } else {
                 toast.error('Signup succeeded, but missing token or user data');
             }
@@ -51,6 +57,7 @@ const SignupForm = () => {
             setIsSubmitting(false);
         }
     };
+    
 
 
 

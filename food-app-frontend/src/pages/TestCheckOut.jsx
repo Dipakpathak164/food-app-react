@@ -41,71 +41,42 @@ const Checkout = () => {
             setFormData(prev => ({ ...prev, [name]: value }));
         }
     };
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        // Check if user is logged in by checking the auth token
-        const token = localStorage.getItem('authToken'); // or use a global state
-        if (!token) {
-            alert("Please log in to continue your order or sign up.");
-            navigate('/login');  // Redirect to login if not logged in
-            return;  // Stop further execution if not logged in
-        }
-    
-        // Check if the cart has items before proceeding
-        if (cart.length === 0) {
-            alert("Your cart is empty. Please add items to the cart before placing the order.");
-            return;  // Prevent order submission if the cart is empty
-        }
-    
-        console.log('Token found:', token); // Debugging line to ensure token is being retrieved
-    
-        const orderData = {
-            billingDetails: formData,
-            shippingDetails: shipToDifferent ? shippingData : formData,
+
+        const payload = {
+            user: formData,
+            shipping: shipToDifferent ? shippingData : formData,
+            cart,
+            totalAmount,
             paymentMethod,
-            items: cart.map(item => ({
-                productId: item.id,
-                name: item.name,
-                quantity: item.quantity,
-                price: item.price
-            })),
-            totalAmount
         };
-    
+
         try {
-            // Send request with token in headers
-            const res = await fetch('http://localhost:5000/api/place-order', {
+            const res = await fetch('/api/place-order', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Add the token in the Authorization header
                 },
-                body: JSON.stringify(orderData)
+                body: JSON.stringify(payload),
             });
-    
+
             const data = await res.json();
-    
+
             if (res.ok) {
-                alert(data.message);
-                clearCart();
-                navigate('/thank-you');
+                localStorage.setItem('token', data.token); // auto-login
+                clearCart(); // optional: clear cart after order placed
+                navigate('/order-success'); // ✅ redirect to thank you page
             } else {
-                alert(data.message || 'Order failed');
+                alert(data.message || 'Something went wrong.');
             }
         } catch (err) {
-            console.error(err);
-            alert('An error occurred while placing the order.');
+            console.error('Error placing order:', err);
+            alert('Failed to place order. Try again.');
         }
     };
-    
-    
-    
-    
-    
-    
-     
+
     return (
         <>
             <TopSection
