@@ -21,7 +21,7 @@ const CustomersTable = () => {
               <th>Email</th>
               <th>Registered On</th>
               <th>Total Orders</th>
-              <th>Actions</th>
+              <th className='sticky-col text-center bg-warning'>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -32,7 +32,7 @@ const CustomersTable = () => {
                   <td>{user.email}</td>
                   <td>{new Date(user.created_at).toLocaleDateString()}</td>
                   <td>{user.total_orders}</td>
-                  <td>
+                  <td  className='sticky-col text-center'>
                     {/* You can link to order history, delete, or more */}
                     <button className="btn btn-primary btn-sm me-2">View</button>
                     <button className="btn btn-danger btn-sm">Delete</button>

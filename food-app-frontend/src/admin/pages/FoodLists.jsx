@@ -64,17 +64,17 @@ const FoodLists = () => {
                 <h3>Food List</h3>
                 <Link to="/admin/add-food-items" className="btn btn-red"><MdAdd className=''/> Add New Food</Link>
             </div>
-
+            <div className='table-responsive'>
             <table className="table table-bordered table-hover">
-                <thead className="table-light">
+                <thead className="table-dark">
                     <tr>
-                        <th>#</th>
+                        <th className='th_sm'>#</th>
                         <th>Name</th>
                         <th>Price (₹)</th>
                         <th>Discounted Price (₹)</th>
                         <th>Description</th>
                         <th>Image</th>
-                        <th className='text-center'>Actions</th>
+                        <th className='sticky-col text-center bg-warning'>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -99,7 +99,7 @@ const FoodLists = () => {
                                         />
                                     )}
                                 </td>
-                                <td className='text-center'>
+                                <td className='sticky-col text-center'>
                                     <Link to={`/admin/foods/edit/${food.id}`} className="btn me-2 btnEdit">
                                     <MdEdit />
                                     </Link>
@@ -115,7 +115,7 @@ const FoodLists = () => {
                     )}
                 </tbody>
             </table>
-
+            </div>
             {/* Bootstrap Modal */}
             {showModal && (
                 <ConfirmModal

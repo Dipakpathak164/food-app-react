@@ -61,51 +61,54 @@ const OrdersWithCustomers = () => {
   return (
     <div className="container">
       <h2>Orders with Customer Details</h2>
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Customer Name</th>
-            <th>Customer Email</th>
-            <th>Phone</th>
-            <th>Delivery Address</th>
-            <th>Status</th>
-            <th>Order Date</th>
-            <th>Total Amount</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map(order => (
-            <tr key={order.order_id}>
-              <td>{order.order_id}</td>
-              <td>{order.customer_name}</td>
-              <td>{order.customer_email}</td>
-              <td>{order.customer_phone}</td>
-              <td>{order.delivery_address}</td>
-              <td>
-                <span className={`badge bg-${order.status === 'delivered' ? 'success' : order.status === 'cancelled' ? 'danger' : 'warning'}`}>
-                  {order.status}
-                </span>
-              </td>
-              <td>{new Date(order.order_date).toLocaleString()}</td>
-              <td>₹{order.total_amount}</td>
-              <td>
-                {order.status !== 'delivered' && (
-                  <button className="btn btn-sm btn-success me-1" onClick={() => markAsDelivered(order.order_id)}>
-                    Mark as Delivered
-                  </button>
-                )}
-                {order.status !== 'cancelled' && (
-                  <button className="btn btn-sm btn-danger" onClick={() => cancelOrder(order.order_id)}>
-                    Cancel
-                  </button>
-                )}
-              </td>
+      <div className="table-responsive mt-4">
+        <table className="table table-bordered">
+          <thead className="table-dark">
+            <tr>
+              <th className='th_sm'>Order ID</th>
+              <th>Customer Name</th>
+              <th>Customer Email</th>
+              <th>Phone</th>
+              <th>Delivery Address</th>
+              <th>Status</th>
+              <th>Order Date</th>
+              <th>Total Amount</th>
+              <th className='sticky-col text-center bg-warning'>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {orders.map(order => (
+              <tr key={order.order_id}>
+                <td>{order.order_id}</td>
+                <td>{order.customer_name}</td>
+                <td>{order.customer_email}</td>
+                <td>{order.customer_phone}</td>
+                <td>{order.delivery_address}</td>
+                <td>
+                  <span className={`badge bg-${order.status === 'delivered' ? 'success' : order.status === 'cancelled' ? 'danger' : 'warning'}`}>
+                    {order.status}
+                  </span>
+                </td>
+                <td>{new Date(order.order_date).toLocaleString()}</td>
+                <td>₹{order.total_amount}</td>
+                <td className='sticky-col text-center'>
+                  {order.status !== 'delivered' && (
+                    <button className="btn btn-sm btn-success me-1" onClick={() => markAsDelivered(order.order_id)}>
+                      Mark as Delivered
+                    </button>
+                  )}
+                  {order.status !== 'cancelled' && (
+                    <button className="btn btn-sm btn-danger" onClick={() => cancelOrder(order.order_id)}>
+                      Cancel
+                    </button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
     </div>
   );
 };

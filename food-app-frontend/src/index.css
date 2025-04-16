@@ -1239,6 +1239,32 @@ label{
   border: 1px solid var(--main-color-red);
   box-shadow: none;
 }
+.table-responsive{
+  width: 1000px;
+}
+tr th{
+  width: 200px;
+  overflow: hidden;
+  max-width: 200px;
+  min-width: 200px;
+}
+tr th.th_sm{
+  width: 100px;
+  overflow: hidden;
+  max-width: 100px;
+  min-width: 100px;
+}
+.sticky-col {
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  gap: 8px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
+}
+.bg-warning{
+  background-color: orange !important;
+}
+ 
 @media (min-width: 1200px) {
   .container {
       max-width: 1180px;
