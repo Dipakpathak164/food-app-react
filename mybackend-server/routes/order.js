@@ -7,6 +7,8 @@ const db = require('../config/db');
 // router.use(express.json()); 
 // ✅ Keep express.json() in your main server.js or app.js
 
+
+// POST /orders - Place a new order
 router.post('/', authenticateToken, async (req, res) => {
     try {
         const {
@@ -40,27 +42,27 @@ router.post('/', authenticateToken, async (req, res) => {
 
         // Database query to insert the order into the orders table
         const orderQuery = `
-            INSERT INTO orders (
-                email, phone, full_name, country, state, city, zip, address,
-                ship_to_different, shipping_full_name, shipping_country, shipping_state, shipping_city, shipping_zip, shipping_address,
-                payment_method, card_number, card_expiry, card_cvv, total_amount
-            ) VALUES (
-                ?, ?, ?, ?, ?, ?, ?, ?,
-                ?, ?, ?, ?, ?, ?, ?,
-                ?, ?, ?, ?, ?
-            )
-        `;
+    INSERT INTO orders (
+        user_id, email, phone, full_name, country, state, city, zip, address,
+        ship_to_different, shipping_full_name, shipping_country, shipping_state, shipping_city, shipping_zip, shipping_address,
+        payment_method, card_number, card_expiry, card_cvv, total_amount
+    ) VALUES (
+        ?, ?, ?, ?, ?, ?, ?, ?, ?,
+        ?, ?, ?, ?, ?, ?, ?,
+        ?, ?, ?, ?, ?
+    )
+`;
 
-        const orderData = [
-            billingDetails.email, billingDetails.phone, billingDetails.fullName, billingDetails.country, billingDetails.state, billingDetails.city, billingDetails.zip, billingDetails.address,
-            shippingDetails ? true : false, shippingInfo.fullName, shippingInfo.country, shippingInfo.state, shippingInfo.city, shippingInfo.zip, shippingInfo.address,
-            paymentMethod,
-            paymentMethod === 'card' ? req.body.cardNumber : null,
-            paymentMethod === 'card' ? req.body.cardExpiry : null,
-            paymentMethod === 'card' ? req.body.cardCvv : null,
-            totalAmount
-        ];
-
+const orderData = [
+    req.user.id, // 👈 Add this line
+    billingDetails.email, billingDetails.phone, billingDetails.fullName, billingDetails.country, billingDetails.state, billingDetails.city, billingDetails.zip, billingDetails.address,
+    shippingDetails ? true : false, shippingInfo.fullName, shippingInfo.country, shippingInfo.state, shippingInfo.city, shippingInfo.zip, shippingInfo.address,
+    paymentMethod,
+    paymentMethod === 'card' ? req.body.cardNumber : null,
+    paymentMethod === 'card' ? req.body.cardExpiry : null,
+    paymentMethod === 'card' ? req.body.cardCvv : null,
+    totalAmount
+];
         // Execute the query to insert the order data
         db.query(orderQuery, orderData, (err, result) => {
             if (err) {
