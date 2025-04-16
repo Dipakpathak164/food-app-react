@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authenticateToken = require('../middleware/authMiddleware'); 
+const authenticateToken = require('../middleware/authMiddleware');
 const db = require('../config/db');
 
 // ❌ Don't need this here:
@@ -53,16 +53,16 @@ router.post('/', authenticateToken, async (req, res) => {
     )
 `;
 
-const orderData = [
-    req.user.id, // 👈 Add this line
-    billingDetails.email, billingDetails.phone, billingDetails.fullName, billingDetails.country, billingDetails.state, billingDetails.city, billingDetails.zip, billingDetails.address,
-    shippingDetails ? true : false, shippingInfo.fullName, shippingInfo.country, shippingInfo.state, shippingInfo.city, shippingInfo.zip, shippingInfo.address,
-    paymentMethod,
-    paymentMethod === 'card' ? req.body.cardNumber : null,
-    paymentMethod === 'card' ? req.body.cardExpiry : null,
-    paymentMethod === 'card' ? req.body.cardCvv : null,
-    totalAmount
-];
+        const orderData = [
+            req.user.id, // 👈 Add this line
+            billingDetails.email, billingDetails.phone, billingDetails.fullName, billingDetails.country, billingDetails.state, billingDetails.city, billingDetails.zip, billingDetails.address,
+            shippingDetails ? true : false, shippingInfo.fullName, shippingInfo.country, shippingInfo.state, shippingInfo.city, shippingInfo.zip, shippingInfo.address,
+            paymentMethod,
+            paymentMethod === 'card' ? req.body.cardNumber : null,
+            paymentMethod === 'card' ? req.body.cardExpiry : null,
+            paymentMethod === 'card' ? req.body.cardCvv : null,
+            totalAmount
+        ];
         // Execute the query to insert the order data
         db.query(orderQuery, orderData, (err, result) => {
             if (err) {

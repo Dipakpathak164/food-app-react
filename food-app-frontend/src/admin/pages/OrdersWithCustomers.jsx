@@ -4,14 +4,16 @@ const OrdersWithCustomers = () => {
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      const res = await fetch('/api/orders-with-customers');
-      const data = await res.json();
-      setOrders(data);
-    };
+  const fetchOrders = async () => {
+    const res = await fetch('http://localhost:5000/api/admin/orders-with-customers');
+    const data = await res.json();
+    console.log('Fetched Orders:', data); // ⬅️ Debug log
+    setOrders(data);
+  };
 
-    fetchOrders();
-  }, []);
+  fetchOrders();
+}, []);
+
 
   return (
     <div className="container">
