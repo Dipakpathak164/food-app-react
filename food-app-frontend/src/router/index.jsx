@@ -8,6 +8,7 @@ import SignInForm from '../auth/SignInForm';
 import ProductDetails from '../pages/ProductDetail';
 import CartPage from '../pages/CartPage';
 import CheckoutPage from '../pages/Checkout';
+import ContactUs from '../pages/GetInTouch';
 
 // Auth 
 import AuthLayout from '../auth/AuthLayout';
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { index: true, element: <Home imagePath="/assets/images/" baseUrl="/" /> },
+      { path: 'contact-us', element: <ContactUs /> },
       { path: 'product-details/:id', element: <ProductDetails /> }, 
       { path: 'cart', element: <CartPage imagePath="/assets/images/" /> },
       { path: 'cart/:id', element: <CartPage  imagePath="/assets/images/"/> },

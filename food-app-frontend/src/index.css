@@ -811,6 +811,9 @@ div.bar3 {
   background-color: #f5e7c1;
   padding-bottom: 35px;
 }
+.activePage{
+  padding-top: 150px;
+}
 .top_wave_2.top_wave_3{
   top: -250px;
   pointer-events: none;
@@ -818,7 +821,7 @@ div.bar3 {
 .getInTouch h3{
   color: var(--main-color-red);
   font-size: 50px;
-  font-family: "MazzardH-Bold";
+  font-family: 'MazzardH-SemiBold';
   margin-bottom: 20px;
 }
 .getInTouch img{
@@ -827,7 +830,7 @@ div.bar3 {
 }
 footer{
   padding-top: 180px;
-  background-image: url("../images/hero_footer.jpg");
+  background-image: url("../public/assets/images/hero_footer.jpg");
   width: 100%;
   background-position: center;
   background-size: cover;
@@ -1074,7 +1077,6 @@ footer hr{
 }
 main{
   position: relative;
-  height: 100vh;
 }
 .dropdown-menu {
   border: 0;

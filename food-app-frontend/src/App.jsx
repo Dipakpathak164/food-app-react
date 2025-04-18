@@ -5,6 +5,8 @@ import { Outlet } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import CartDrawer from './components/CartDrawer';
 import { useAuth } from './context/AuthContext';
+import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 const App = () => {
   const { isLoggingOut } = useAuth();
@@ -20,6 +22,8 @@ const App = () => {
           </div>
         </div>
       )}
+
+     <ScrollToTop />
 
       {/* Top-level CartDrawer */}
       <CartDrawer imagePath="/assets/images/" isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
@@ -43,6 +47,7 @@ const App = () => {
       <main>
         <Outlet />
       </main>
+      <Footer />
     </>
   );
 };
