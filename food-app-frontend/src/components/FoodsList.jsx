@@ -6,7 +6,8 @@ import toast from 'react-hot-toast';
 
 const FoodList = ({ imagePath }) => {
   const [foods, setFoods] = useState([]);
-  const { cart, addToCart } = useCart();
+  const { cart, addToCart, removeFromCart } = useCart();
+
   const navigate = useNavigate();
   const [loadingItemId, setLoadingItemId] = useState(null);
 
@@ -97,15 +98,28 @@ const FoodList = ({ imagePath }) => {
                     <img src={`${imagePath}plus.png`} alt="plus" />
                   </button>
                 ) : (
-                  <button
-                    className="btn btn_pus bg-danger d-flex justify-content-center align-items-center"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/cart/${item.id}`);
-                    }}
-                  >
-                    <img src={`${imagePath}shopping-bag.png`} alt="cart" />
-                  </button>
+                  <div className="d-flex flex-column align-items-center">
+                    <button
+                      className="btn btn_pus bg-danger d-flex justify-content-center align-items-center mb-1"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/cart/${item.id}`);
+                      }}
+                    >
+                      <img src={`${imagePath}shopping-bag.png`} alt="cart" />
+                    </button>
+                    <button
+                      className="btn bg-warning d-flex justify-content-center align-items-center py-0"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        removeFromCart(item);
+                        toast.success(`${item.name} removed from cart!`);
+                      }}
+                      title='Remove Item'
+                    >
+                      <img src={`${imagePath}minus-sign.png`} alt="remove" />
+                    </button>
+                  </div>
                 )}
 
               </div>
