@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 
+
+import { MdHome } from 'react-icons/md';
+
 const SignInForm = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -21,47 +24,51 @@ const SignInForm = () => {
     setIsSubmitting(true);
 
     try {
-        // Simulate delay before making the API call
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Simulate delay before making the API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        const res = await axios.post('http://localhost:5000/api/auth/signin', formData);
-        console.log("🧪 Login Response:", res.data);
+      const res = await axios.post('http://localhost:5000/api/auth/signin', formData);
+      console.log("🧪 Login Response:", res.data);
 
-        const { token, user } = res.data;
+      const { token, user } = res.data;
 
-        if (token && user) {
-            // Store the token and user data in localStorage (or sessionStorage if preferred)
-            localStorage.setItem('token', token);  // Store the token
-            localStorage.setItem('user', JSON.stringify(user));  // Store the user data
+      if (token && user) {
+        // Store the token and user data in localStorage (or sessionStorage if preferred)
+        localStorage.setItem('token', token);  // Store the token
+        localStorage.setItem('user', JSON.stringify(user));  // Store the user data
 
-            // Call login function (if using global state)
-            login(token, user);
+        // Call login function (if using global state)
+        login(token, user);
 
-            toast.success(`Welcome back, ${user.name}!`);
+        toast.success(`Welcome back, ${user.name}!`);
 
-            // ✅ Role-based redirect
-            if (user.role === 'superadmin') {
-                navigate('/admin/dashboard');
-            } else {
-                navigate('/');  // Redirect to homepage or user dashboard
-            }
+        // ✅ Role-based redirect
+        if (user.role === 'superadmin') {
+          navigate('/admin/dashboard');
         } else {
-            toast.error('Login succeeded, but missing token or user data');
+          navigate('/');  // Redirect to homepage or user dashboard
         }
+      } else {
+        toast.error('Login succeeded, but missing token or user data');
+      }
     } catch (err) {
-        // Handle error from API
-        toast.error(err.response?.data?.message || 'Login failed');
+      // Handle error from API
+      toast.error(err.response?.data?.message || 'Login failed');
     } finally {
-        setIsSubmitting(false);
+      setIsSubmitting(false);
     }
-};
+  };
 
-  
+
 
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="SignUpForm formBoxParents">
+      <Link to="/" className="btn btn-light d-inline-flex align-items-center homeLink mb-2">
+        <MdHome size={20} color='#e84242'/>
+      </Link>
+
       <div className='w-100'>
         <form onSubmit={handleSubmit} className='row'>
           <div className="col-md-12"><h1>Sign In</h1></div>

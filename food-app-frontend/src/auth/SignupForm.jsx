@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { MdHome } from 'react-icons/md';
 
 import { useAuth } from '../context/AuthContext';
 
@@ -30,22 +31,22 @@ const SignupForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-    
+
         try {
             // Simulate a 1-second delay before making the API call (if needed)
             await new Promise((resolve) => setTimeout(resolve, 1000));
-    
+
             const res = await axios.post('http://localhost:5000/api/auth/signup', formData);
             const { token, user } = res.data;
-    
+
             if (token && user) {
                 // Store the token and user data in localStorage (or sessionStorage if preferred)
                 localStorage.setItem('token', token);  // Store token
                 localStorage.setItem('user', JSON.stringify(user));  // Store user data (optional)
-    
+
                 // Call the login function if necessary
                 login(token, user);
-    
+
                 toast.success('Thanks for signing up!');
                 navigate('/');  // Redirect to homepage or dashboard
             } else {
@@ -57,7 +58,7 @@ const SignupForm = () => {
             setIsSubmitting(false);
         }
     };
-    
+
 
 
 
@@ -67,6 +68,9 @@ const SignupForm = () => {
 
     return (
         <div className='SignUpForm formBoxParents'>
+            <Link to="/" className="btn btn-light d-inline-flex align-items-center homeLink mb-2">
+                <MdHome size={20} color='#e84242' />
+            </Link>
             <div className="w-100">
                 <form onSubmit={handleSubmit} className='row'>
                     <div className="col-md-12">

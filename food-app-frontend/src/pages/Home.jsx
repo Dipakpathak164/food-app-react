@@ -1,5 +1,6 @@
 import React from 'react';
-import FoodList from '../components/FoodsList'; 
+import FoodList from '../components/FoodsList';
+import GetInTouch from './GetInTouch';
 
 const Home = ({ imagePath, baseUrl }) => {
   return (
@@ -87,10 +88,54 @@ const Home = ({ imagePath, baseUrl }) => {
                 </div>
               </div>
               {/* If there's more review rows, you can continue here */}
+              <div class="col-md-6 d-flex align-items-center">
+                <div class="text-right">
+                  <h5>
+                    "Awesome service and even better burgers!"
+                  </h5>
+                  <p class="reviewer">
+                    @honeyb
+                  </p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <img src={`${imagePath}reviews_04.png`} class="w-100" alt="reviews_01" />
+              </div>
             </div>
           </div>
         </div>
+        <img src={`${imagePath}wave2.svg`} alt="bottom_wave" class="w-100 bottom_wave"></img>
       </section>
+      <section class="social_section">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <h4>
+                Give us a follow
+              </h4>
+              <ul class="socialUl d-flex justify-content-center">
+                <li>
+                  <a href="#">
+                    <img src={`${imagePath}facebook-app-symbol.png`} alt="facebook-app-symbol" />
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src={`${imagePath}instagram.png`} alt="instagram" />
+                  </a>
+                </li>
+                <li>
+                  <a href="#">
+                    <img src={`${imagePath}linkedin.png`} alt="linkedin" />
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <img src={`${imagePath}wave.svg`} alt="wave" class="w-100 mb--bottom" />
+      </section>
+      <GetInTouch />
     </>
   );
 };

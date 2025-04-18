@@ -737,7 +737,7 @@ div.bar3 {
   opacity: 0.5;
 }
 .social_section{
-  background-image: url("../images/hero_home_02.jpg");
+  background-image: url("../public/assets/images/hero_home_02.jpg");
   width: 100%;
   background-position: center;
   background-size: cover;

@@ -1,6 +1,6 @@
 .formBoxParents{
     position: absolute;
-    top: calc(50% + 55px);
+    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     max-width: 448px;
@@ -27,3 +27,25 @@
 .bottomTexts a{
     text-decoration: none;
 }
+.auth-page-wrapper{
+    background-image: url('../../public/assets/images/smilleyGuy.jpg');
+    width: 100%;
+    height: 300px;
+    background-size: cover;
+    background-position: center -165px;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 1;
+}
+.auth-page-wrapper::before{
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-color: rgba(232, 66, 66, 0.8);
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+ 
