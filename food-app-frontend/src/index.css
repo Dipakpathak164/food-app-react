@@ -1264,6 +1264,12 @@ tr th.th_sm{
 .bg-warning{
   background-color: orange !important;
 }
+tr td{
+  vertical-align: middle;
+}
+tr td{
+  border-bottom: 1px solid  #e2e2e2 !important;
+}
  
 @media (min-width: 1200px) {
   .container {

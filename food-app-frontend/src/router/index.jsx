@@ -16,7 +16,8 @@ import AddFood from '../admin/pages/AddFood';
 import FoodLists from '../admin/pages/FoodLists';
 import EditFood from '../admin/pages/EditFood'
 import Customers from '../admin/pages/CustomersTable';
-import Orders from '../admin/pages/OrdersWithCustomers'
+import Orders from '../admin/pages/OrdersWithCustomers';
+import CustomerDetails from '../admin/pages/CustomerDetails'
 // (Optional) Other admin pages can be imported too
 
 const router = createBrowserRouter([
@@ -46,6 +47,7 @@ const router = createBrowserRouter([
       { path: 'foods/edit/:id', element: <EditFood /> },
       { path: 'customers', element: <Customers /> },
       { path: 'orders', element: <Orders /> },
+      { path: "customers/:id", element : <CustomerDetails />},
     ],
   },
 ]);

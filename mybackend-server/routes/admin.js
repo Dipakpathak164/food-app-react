@@ -29,6 +29,53 @@ router.get('/customers', (req, res) => {
   });
 });
 
+router.delete('/customers/:id', (req, res) => {
+  const userId = req.params.id;
+
+  const deleteQuery = 'DELETE FROM users WHERE id = ?';
+
+  db.query(deleteQuery, [userId], (err, result) => {
+    if (err) {
+      console.error('Error deleting user:', err);
+      return res.status(500).json({ message: 'Failed to delete user' });
+    }
+
+    return res.status(200).json({ message: 'User deleted successfully' });
+  });
+});
+
+// Get details of a specific customer
+router.get('/customers/:id', (req, res) => {
+  const userId = req.params.id;
+
+  const query = `
+    SELECT 
+      users.id,
+      users.name,
+      users.email,
+      users.created_at,
+      COUNT(orders.id) AS total_orders
+    FROM users
+    LEFT JOIN orders ON users.id = orders.user_id
+    WHERE users.id = ?
+    GROUP BY users.id
+  `;
+
+  db.query(query, [userId], (err, result) => {
+    if (err) {
+      console.error('Error fetching customer details:', err);
+      return res.status(500).json({ message: 'Database error' });
+    }
+
+    if (result.length === 0) {
+      return res.status(404).json({ message: 'Customer not found' });
+    }
+
+    res.status(200).json(result[0]);
+  });
+});
+
+
 
 // orders-with-customers
 router.get('/orders-with-customers', (req, res) => {

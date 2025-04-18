@@ -1,14 +1,50 @@
 import React, { useEffect, useState } from 'react';
+import ConfirmModal from '../../components/ConfirmModal'; // Make sure path is correct
+import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const CustomersTable = () => {
   const [customers, setCustomers] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/admin/customers') // Adjust to your backend route
+    fetch('http://localhost:5000/api/admin/customers')
       .then((res) => res.json())
       .then((data) => setCustomers(data))
       .catch((err) => console.error('Failed to fetch customers:', err));
   }, []);
+
+  const openConfirmModal = (id) => {
+    setDeleteId(id);
+    setShowModal(true);
+  };
+
+  const handleDelete = () => {
+    if (!deleteId) return;
+
+    fetch(`http://localhost:5000/api/admin/customers/${deleteId}`, {
+      method: 'DELETE',
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setCustomers(customers.filter((user) => user.id !== deleteId));
+        toast.success('Customer deleted successfully');
+      })
+      .catch((err) => {
+        console.error('Delete failed:', err);
+        toast.error('Failed to delete customer');
+      })
+      .finally(() => {
+        setShowModal(false);
+        setDeleteId(null);
+      });
+  };
+
+  const handleView = (id) => {
+    navigate(`/admin/customers/${id}`);
+  };
 
   return (
     <div className="container mt-4">
@@ -21,7 +57,7 @@ const CustomersTable = () => {
               <th>Email</th>
               <th>Registered On</th>
               <th>Total Orders</th>
-              <th className='sticky-col text-center bg-warning'>Actions</th>
+              <th className="sticky-col text-center bg-warning">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -32,10 +68,14 @@ const CustomersTable = () => {
                   <td>{user.email}</td>
                   <td>{new Date(user.created_at).toLocaleDateString()}</td>
                   <td>{user.total_orders}</td>
-                  <td  className='sticky-col text-center'>
-                    {/* You can link to order history, delete, or more */}
-                    <button className="btn btn-primary btn-sm me-2">View</button>
-                    <button className="btn btn-danger btn-sm">Delete</button>
+                  <td className="sticky-col text-center">
+                    <button className="btn btn-primary btn-sm me-2" onClick={() => handleView(user.id)}>View</button>
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => openConfirmModal(user.id)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))
@@ -47,6 +87,15 @@ const CustomersTable = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Confirm Modal */}
+      <ConfirmModal
+        show={showModal}
+        title="Delete Customer"
+        message="Are you sure you want to delete this customer?"
+        onConfirm={handleDelete}
+        onClose={() => setShowModal(false)}
+      />
     </div>
   );
 };

@@ -91,9 +91,9 @@ const OrdersWithCustomers = () => {
                 </td>
                 <td>{new Date(order.order_date).toLocaleString()}</td>
                 <td>₹{order.total_amount}</td>
-                <td className='sticky-col text-center'>
+                <td className='sticky-col text-center td-border-bottom'>
                   {order.status !== 'delivered' && (
-                    <button className="btn btn-sm btn-success me-1" onClick={() => markAsDelivered(order.order_id)}>
+                    <button className="btn btn-sm btn-success me-1 mb-1" onClick={() => markAsDelivered(order.order_id)}>
                       Mark as Delivered
                     </button>
                   )}
