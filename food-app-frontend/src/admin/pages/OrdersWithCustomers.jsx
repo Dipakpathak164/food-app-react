@@ -94,12 +94,12 @@ const OrdersWithCustomers = () => {
                 <td className='sticky-col text-center td-border-bottom'>
                   {order.status !== 'delivered' && (
                     <button className="btn btn-sm btn-success me-1 mb-1" onClick={() => markAsDelivered(order.order_id)}>
-                      Mark as Delivered
+                      <i className='bi bi-check me-1' ></i> Mark as Delivered
                     </button>
                   )}
                   {order.status !== 'cancelled' && (
                     <button className="btn btn-sm btn-danger" onClick={() => cancelOrder(order.order_id)}>
-                      Cancel
+                      <i className='bi bi-x me-1' ></i> Cancel
                     </button>
                   )}
                 </td>

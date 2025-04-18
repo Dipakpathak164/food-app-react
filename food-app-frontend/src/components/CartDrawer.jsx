@@ -30,7 +30,7 @@ const CartDrawer = ({ imagePath, isOpen, onClose }) => {
         <div className="cart-drawer-body p-3">
           {cart.length > 0 ? (
             <>
-              <ul className="list-group mb-3">
+              <ul className="list-group">
                 {cart.map((item, index) => (
                   <li key={index} className="list-group-item d-flex justify-content-between">
                     <span>

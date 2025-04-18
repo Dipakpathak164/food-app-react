@@ -16,8 +16,8 @@ const ConfirmModal = ({ show, title, message, onConfirm, onClose }) => {
             <p>{message || 'Are you sure?'}</p>
           </div>
           <div className="modal-footer">
-            <button className="btn btn-secondary" onClick={onClose}>Cancel</button>
-            <button className="btn btn-danger" onClick={onConfirm}>Delete</button>
+            <button className="btn btn-secondary" onClick={onClose}><i className='bi bi-x me-1' ></i> Cancel</button>
+            <button className="btn btn-danger" onClick={onConfirm}><i className='bi bi-trash me-1' ></i> Delete</button>
           </div>
         </div>
       </div>

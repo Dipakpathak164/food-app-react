@@ -1222,14 +1222,19 @@ button.addRemoveBtn:hover{
   bottom: 0;
 }
 .cartButtons{
-  position: absolute;
-  bottom: 15px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: fixed;
+  bottom: -100%;
+  right: 0;
   width: 100%;
-  padding:15px 15px 0 15px;
-  border-top: 1px solid #e2e2e2;
+  padding:15px 15px 15px 15px;
+  background-color: #fff;
   z-index: 2;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  width: 350px;
+  transition: bottom 0.3s ease-in-out;
+}
+.cart-drawer.open .cartButtons{
+  bottom: 0;
 }
 label{
   display: block;
@@ -1270,6 +1275,38 @@ tr td{
 tr td{
   border-bottom: 1px solid  #e2e2e2 !important;
 }
+/* .spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #fff;
+  border-top: 2px solid #e84242;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+} */
+
+.rotate {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.list-group{
+  margin-bottom: 100px;
+}
+
  
 @media (min-width: 1200px) {
   .container {

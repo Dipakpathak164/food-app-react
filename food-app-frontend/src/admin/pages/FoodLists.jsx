@@ -100,12 +100,12 @@ const FoodLists = () => {
                                     )}
                                 </td>
                                 <td className='sticky-col text-center'>
-                                    <Link to={`/admin/foods/edit/${food.id}`} className="btn me-2 btnEdit">
+                                    <Link to={`/admin/foods/edit/${food.id}`} title='Delete' className="btn me-2 btnEdit">
                                     <MdEdit />
                                     </Link>
                                     <button
                                         onClick={() => confirmDelete(food.id)}
-                                        className="btn btnDelete"
+                                        className="btn btnDelete" title='Delete'
                                     >
                                          <MdDelete />
                                     </button>
@@ -120,7 +120,7 @@ const FoodLists = () => {
             {showModal && (
                 <ConfirmModal
                     show={showModal}
-                    title="Confirm Delete"
+                    title="Delete food item"
                     message="Are you sure you want to delete this food item?"
                     onClose={() => setShowModal(false)}
                     onConfirm={handleDelete}

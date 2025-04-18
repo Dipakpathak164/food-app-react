@@ -69,12 +69,14 @@ const CustomersTable = () => {
                   <td>{new Date(user.created_at).toLocaleDateString()}</td>
                   <td>{user.total_orders}</td>
                   <td className="sticky-col text-center">
-                    <button className="btn btn-primary btn-sm me-2" onClick={() => handleView(user.id)}>View</button>
+                    <button className="btn btn-success btn-sm me-2" onClick={() => handleView(user.id)}>
+                      <i className='bi bi-eye me-1' ></i>
+                      View</button>
                     <button
                       className="btn btn-danger btn-sm"
                       onClick={() => openConfirmModal(user.id)}
                     >
-                      Delete
+                      <i className='bi bi-trash me-1' ></i> Delete
                     </button>
                   </td>
                 </tr>
