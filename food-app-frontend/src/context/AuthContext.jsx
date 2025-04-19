@@ -25,7 +25,6 @@ export const AuthProvider = ({ children }) => {
 
     if (token && userInfo) {
       if (!isValidToken(token)) {
-        // Token is invalid or expired, clear it
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         setIsLoggedIn(false);
@@ -39,24 +38,21 @@ export const AuthProvider = ({ children }) => {
         setUser(parsedUser);
       } catch (error) {
         console.error('❌ Failed to parse user from localStorage:', error);
-        localStorage.removeItem('user');  // Clean up corrupted data
+        localStorage.removeItem('user');
       }
     }
   }, []);
 
   const login = (token, userData) => {
     localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(userData));  // Safe stringify
+    localStorage.setItem('user', JSON.stringify(userData));  // userData should have primaryAddress
     setIsLoggedIn(true);
-    setUser(userData);
+    setUser(userData);  // This should include primaryAddress in userData
   };
 
   const logout = async () => {
     setIsLoggingOut(true);
-
-    // Optional delay to simulate a loading experience
     await new Promise((resolve) => setTimeout(resolve, 1000));
-
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setIsLoggedIn(false);

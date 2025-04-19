@@ -93,7 +93,7 @@ const Home = ({ imagePath, baseUrl }) => {
                   <h5>
                     "Awesome service and even better burgers!"
                   </h5>
-                  <p class="reviewer">
+                  <p className='reviewer'>
                     @honeyb
                   </p>
                 </div>

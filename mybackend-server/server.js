@@ -6,7 +6,9 @@ const authRoutes = require('./routes/auth');
 const foodRoutes = require('./routes/foodRoutes'); 
 const orderRoutes = require('./routes/order');
 const adminRoutes = require('./routes/admin');
-const contactUs = require('./routes/contact')
+const contactUs = require('./routes/contact');
+const profileRoutes = require('./routes/profile');
+const addAddress = require('./routes/addAddress');
 
 
 require('./initDB'); // 💡 This initializes DB tables & inserts default admin
@@ -40,6 +42,8 @@ app.use('/api/foods', foodRoutes);
 app.use('/api/place-order', orderRoutes);  
 app.use('/api/admin', adminRoutes);
 app.use('/api/contact', contactUs);
+app.use('/api/profile', profileRoutes);
+app.use('/api/add-address', addAddress);
 
 // Start server
 const PORT = process.env.PORT || 5000;

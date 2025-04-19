@@ -66,13 +66,49 @@ router.post('/', authenticateToken, async (req, res) => {
         // Execute the query to insert the order data
         db.query(orderQuery, orderData, (err, result) => {
             if (err) {
-                console.error('❌ Error inserting order:', err);  // Log detailed error
+                console.error('❌ Error inserting order:', err);
                 return res.status(500).json({ message: 'Failed to place order', error: err });
             }
-
+        
             console.log('🧾 Order inserted:', result);
-            return res.status(200).json({ message: 'Order placed successfully' });
+        
+            // Check if primary address already exists
+            const checkQuery = 'SELECT primary_address FROM users WHERE id = ?';
+            db.query(checkQuery, [req.user.id], (checkErr, checkResult) => {
+                if (checkErr) {
+                    console.error('🔍 Error checking primary address:', checkErr);
+                    return res.status(500).json({ message: 'Order placed, but failed to check primary address.' });
+                }
+        
+                const primaryExists = checkResult[0]?.primary_address;
+        
+                if (!primaryExists) {
+                    // If no primary address, set it
+                    const primaryAddressToSet = JSON.stringify({
+                        address: billingDetails.address,
+                        phone: billingDetails.phone,
+                        fullName: billingDetails.fullName,
+                        city: billingDetails.city,
+                        state: billingDetails.state,
+                        zip: billingDetails.zip,
+                        country: billingDetails.country,
+                    });
+        
+                    const updateQuery = 'UPDATE users SET primary_address = ? WHERE id = ?';
+                    db.query(updateQuery, [primaryAddressToSet, req.user.id], (updateErr) => {
+                        if (updateErr) {
+                            console.error('⚠️ Failed to set primary address:', updateErr);
+                            return res.status(500).json({ message: 'Order placed, but failed to set primary address.' });
+                        }
+        
+                        return res.status(200).json({ message: 'Order placed and primary address set.' });
+                    });
+                } else {
+                    return res.status(200).json({ message: 'Order placed successfully' });
+                }
+            });
         });
+        
 
     } catch (error) {
         console.error('❌ Order error:', error);
