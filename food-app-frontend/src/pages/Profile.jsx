@@ -60,7 +60,7 @@ const Profile = () => {
     formData.append('name', form.name);
     if (image) formData.append('profileImage', image);
 
-    await axios.post(`/api/profile/update/${user.id}`, formData);
+    await axios.post(`http://localhost:5000/api/profile/update/${user.id}`, formData);
     alert('✅ Profile updated!');
     setIsEditing(false);
   };
