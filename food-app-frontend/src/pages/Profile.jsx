@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 
 const Profile = () => {
   const { user } = useAuth();
-  const [form, setForm] = useState({});
+  const [form, setForm] = useState({ addresses: [] });
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -27,10 +27,14 @@ const Profile = () => {
       .then(res => {
         const userData = res.data;
 
-        if (userData.addresses && userData.addresses.length > 0 && userData.orderCount > 0) {
-          userData.addresses = userData.addresses.map((a, i) =>
-            i === 0 ? { ...a, isPrimary: true } : a
-          );
+        // Ensure addresses array exists
+        if (!Array.isArray(userData.addresses)) {
+          userData.addresses = [];
+        }
+
+        // Ensure the first address is marked as primary if no primary exists
+        if (userData.addresses.length > 0 && !userData.addresses.some(a => a.is_primary)) {
+          userData.addresses[0].is_primary = true;
         }
 
         setForm(userData);
@@ -70,12 +74,14 @@ const Profile = () => {
       newAddress.zip &&
       newAddress.address
     ) {
-      const isPrimary = form.addresses?.length === 0;
-      axios.post(`http://localhost:5000/api/profile/add-address/${user.id}`, newAddress)
+      const isPrimary = form.addresses.length === 0;
+      const addressToSend = { ...newAddress, is_primary: isPrimary };
+
+      axios.post(`http://localhost:5000/api/profile/add-address/${user.id}`, addressToSend)
         .then(() => {
           setForm(prev => ({
             ...prev,
-            addresses: [...(prev.addresses || []), { ...newAddress, isPrimary }],
+            addresses: [...(prev.addresses || []), addressToSend],
           }));
           setNewAddress({
             full_name: '',
@@ -96,19 +102,58 @@ const Profile = () => {
   };
 
   const handleSetPrimaryAddress = (addressId) => {
-    axios.put(`/api/profile/add-address/${user.id}/${addressId}/primary`)
+    axios.put(`http://localhost:5000/api/profile/add-address/${user.id}/${addressId}/primary`)
       .then(() => {
         const updatedAddresses = form.addresses.map(addr =>
-          addr.id === addressId ? { ...addr, isPrimary: true } : { ...addr, isPrimary: false }
+          addr.id === addressId ? { ...addr, is_primary: true } : { ...addr, is_primary: false }
         );
         setForm({ ...form, addresses: updatedAddresses });
       })
       .catch(err => console.error('Error setting primary address', err));
   };
 
+  const handleEditAddress = (addressId) => {
+    const addressToEdit = form.addresses.find(addr => addr.id === addressId);
+    setNewAddress(addressToEdit);
+    setShowNewAddressInput(true);
+  };
+
+  const handleUpdateAddress = () => {
+    if (
+      newAddress.full_name &&
+      newAddress.phone &&
+      newAddress.state &&
+      newAddress.city &&
+      newAddress.zip &&
+      newAddress.address
+    ) {
+      axios.put(`http://localhost:5000/api/profile/update-address/${user.id}/${newAddress.id}`, newAddress)
+        .then(() => {
+          const updatedAddresses = form.addresses.map(addr =>
+            addr.id === newAddress.id ? { ...newAddress } : addr
+          );
+          setForm({ ...form, addresses: updatedAddresses });
+          setNewAddress({
+            full_name: '',
+            phone: '',
+            country: 'India',
+            state: '',
+            city: '',
+            zip: '',
+            address: '',
+            is_primary: false
+          });
+          setShowNewAddressInput(false);
+        })
+        .catch(err => console.error('Error updating address', err));
+    } else {
+      alert("Please fill all address fields.");
+    }
+  };
+
   if (loading) return <p>Loading profile...</p>;
 
-  const primaryAddress = form.addresses?.find(addr => addr.isPrimary);
+  const primaryAddress = form.addresses.find(addr => addr.is_primary);
 
   return (
     <div className="container mt-4 pt-5">
@@ -119,16 +164,6 @@ const Profile = () => {
           <p><strong>Name:</strong> {form.name}</p>
           <p><strong>Phone:</strong> {form.phone || '-'}</p>
           <p><strong>Email:</strong> {form.email}</p>
-
-          {primaryAddress && (
-            <div>
-              <h5>Primary Address</h5>
-              <p>{primaryAddress.full_name}</p>
-              <p>{primaryAddress.phone}</p>
-              <p>{primaryAddress.address}</p>
-              <p>{primaryAddress.city}, {primaryAddress.state}, {primaryAddress.zip}, {primaryAddress.country}</p>
-            </div>
-          )}
 
           <button onClick={() => setIsEditing(true)}>Edit</button>
         </div>
@@ -181,7 +216,9 @@ const Profile = () => {
             />
             Set as Primary
           </label>
-          <button onClick={handleAddNewAddress}>Save Address</button>
+          <button onClick={newAddress.id ? handleUpdateAddress : handleAddNewAddress}>
+            {newAddress.id ? 'Update Address' : 'Save Address'}
+          </button>
         </div>
       )}
 
@@ -198,11 +235,12 @@ const Profile = () => {
                 <input
                   type="radio"
                   name="primaryAddress"
-                  checked={addr.isPrimary}
+                  checked={addr.is_primary}
                   onChange={() => handleSetPrimaryAddress(addr.id)}
                 />
                 Set as Primary
               </label>
+              <button onClick={() => handleEditAddress(addr.id)}>Edit</button>
             </div>
           ))}
         </div>
