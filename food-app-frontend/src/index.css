@@ -392,6 +392,7 @@ padding: 0px 5px;
 .contactLink li a{
   color: var(--main-color-red);
   font-size: 25px;
+  text-decoration: none;
 }
 .contactLink li a:hover{
   color: var(--main-color-red);
