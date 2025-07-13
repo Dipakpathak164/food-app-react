@@ -139,6 +139,26 @@ router.post('/', authenticateToken, async (req, res) => {
     }
 });
 
+// Get all orders for a specific user
+router.get('/user/:userId', (req, res) => {
+  const userId = req.params.userId;
+
+  const sql = `
+    SELECT * FROM orders 
+    WHERE user_id = ?
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, [userId], (err, results) => {
+    if (err) {
+      console.error('Error fetching user orders:', err);
+      return res.status(500).json({ message: 'Failed to fetch orders' });
+    }
+
+    return res.status(200).json(results);
+  });
+});
+
 
 
 

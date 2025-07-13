@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import CartIcon from './CartIcon';
+import { MdShoppingCart, MdReceiptLong, MdLocalGroceryStore,MdPerson, MdAccountCircle,MdLogout } from 'react-icons/md';
+
 
 const Navbar = ({setCartOpen, baseUrl = '/', imagePath = '/assets/images/' }) => {
   const location = useLocation();
@@ -93,9 +95,9 @@ const Navbar = ({setCartOpen, baseUrl = '/', imagePath = '/assets/images/' }) =>
                   <li className={isActive('/faqs')}>
                     <Link to={`${baseUrl}faqs`} className="nav-link animate__fadeInUp animate__animated">FAQ</Link>
                   </li>
-                  <li className={isActive('/blogs')}>
+                  {/* <li className={isActive('/blogs')}>
                     <Link to={`${baseUrl}blogs`} className="nav-link animate__fadeInUp animate__animated">Blogs</Link>
-                  </li>
+                  </li> */}
                   <li className={isActive('/contact-us')}>
                     <Link to={`${baseUrl}contact-us`} className="nav-link animate__fadeInUp animate__animated goService">Contact Us</Link>
                   </li>
@@ -128,7 +130,12 @@ const Navbar = ({setCartOpen, baseUrl = '/', imagePath = '/assets/images/' }) =>
                       <ul className="dropdown-menu">
                         <li className='dropdown-menu_menu'>
                           <Link className="nav-link" to="/profile">
-                            <img src={`${imagePath}profile-circle.png`} alt="profile-circle" /> My Profile
+                             <MdAccountCircle /> My Profile
+                          </Link>
+                        </li>
+                        <li className='dropdown-menu_menu'>
+                          <Link className="nav-link" to="/my-orders">
+                           < MdShoppingCart /> My Orders
                           </Link>
                         </li>
                         <li className='dropdown-menu_menu mb-0'>
@@ -137,7 +144,7 @@ const Navbar = ({setCartOpen, baseUrl = '/', imagePath = '/assets/images/' }) =>
                             className="nav-link btn btn-link"
                             disabled={isLoggingOut}
                           >
-                            <img src={`${imagePath}logoutNew.png`} alt="logout" /> Logout
+                            <MdLogout /> Logout
                           </button>
 
                         </li>

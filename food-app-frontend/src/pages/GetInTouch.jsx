@@ -33,7 +33,7 @@ const GetInTouch = () => {
         setStatus('');
 
         try {
-            const res = await axios.post('http://localhost:5000/api/contact', formData);
+            const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/contact`, formData); 
             toast.success(res.data.message || 'Message sent!');
             setFormData({ fullName: '', email: '', phone: '', message: '' });
         } catch (err) {

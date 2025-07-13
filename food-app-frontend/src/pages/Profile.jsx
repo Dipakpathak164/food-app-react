@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import { MdEdit, MdDelete, MdAdd, MdSave, MdCancel } from 'react-icons/md';
+import { MdEdit, MdDelete, MdAdd, MdSave, MdCancel, MdClose } from 'react-icons/md';
 
 const Profile = () => {
   const { user } = useAuth();
@@ -158,16 +158,16 @@ const Profile = () => {
 
   return (
     <>
-      <section className='py-5 bg-white'>
-        <div className="container mt-4 pt-5">
+      <section className='py-5 commonColor'>
+        <div className="container pt-3 bg-white marginTop">
           <div className="row">
             <div className="col-md-6">
-              <h3 className='mb-3'>User Profile</h3>
+              <h3 className='mb-3'><b>User Profile</b></h3>
               {!isEditing ? (
                 <div className='border p-4'>
-                  <p><strong>Name:</strong> {form.name}</p>
-                  <p><strong>Phone:</strong> {form.phone || '-'}</p>
-                  <p><strong>Email:</strong> {form.email}</p>
+                  <p className="mb-2"><strong>Name:</strong> {form.name}</p>
+                  <p className="d-none"><strong>Phone:</strong> {form.phone || '-'}</p>
+                  <p className="mb-2"><strong>Email:</strong> {form.email}</p>
 
                   <button className='btn btn-outline-secondary' onClick={() => setIsEditing(true)}> <MdEdit />Edit</button>
                 </div>
@@ -175,15 +175,15 @@ const Profile = () => {
                 <form onSubmit={handleSubmit} className='border p-3'>
                   <div className='form-group'>
                     <label>Name:</label>
-                    <input name="name" value={form.name || ''} onChange={handleChange} className='form-control'/>
+                    <input name="name" value={form.name || ''} onChange={handleChange} className='form-control' />
                   </div>
-                  <div className='form-group'>
+                  <div className='form-group d-none'>
                     <label>Phone:</label>
-                    <input name="phone" value={form.phone || ''} onChange={handleChange} className='form-control'/>
+                    <input name="phone" value={form.phone || ''} onChange={handleChange} className='form-control' />
                   </div>
                   <div className='form-group'>
                     <label>Email:</label>
-                    <input value={form.email} disabled className='form-control'/>
+                    <input value={form.email} disabled className='form-control' />
                   </div>
                   <div>
                     <label>Profile Image:</label>
@@ -191,42 +191,54 @@ const Profile = () => {
                     {form.profile_image && <img src={`/uploads/${form.profile_image}`} alt="Profile" width={100} />}
                   </div>
                   <div className='mt-3'>
-                        <button className='btn unique-button unique-button-border me-2' type="button" onClick={() => setIsEditing(false)}><MdCancel /> Cancel</button>
-                  <button className='btn unique-button' type="submit"><MdSave /> Save</button>
+                    <button className='btn unique-button unique-button-border me-2' type="button" onClick={() => setIsEditing(false)}><MdCancel /> Cancel</button>
+                    <button className='btn unique-button' type="submit"><MdSave /> Save</button>
                   </div>
                 </form>
               )}
             </div>
             <div className="col-md-6">
               {/* Add Address Section */}
-              <h3 className='mb-3'>Manage Addresses</h3>
-              <button className='btn btn-outline-secondary' type="button" onClick={() => setShowNewAddressInput(prev => !prev)}>
-                {showNewAddressInput ? 'Cancel' : 'Add New Address'}
-                <MdAdd />
+              <h3 className='mb-3'><b>Manage Addresses</b></h3>
+              <button
+                className={`btn ${showNewAddressInput ? 'btn-red' : 'btn-outline-secondary'}`}
+                type="button"
+                onClick={() => setShowNewAddressInput(prev => !prev)}
+              >
+                {showNewAddressInput ? (
+                  <>
+                    Cancel <MdClose className="ms-1" />
+                  </>
+                ) : (
+                  <>
+                    Add New Address <MdAdd className="ms-1" />
+                  </>
+                )}
               </button>
+
 
               {showNewAddressInput && (
                 <div className="mt-3">
                   <div className="form-group">
-                     <input name="full_name" value={newAddress.full_name} onChange={handleChange} placeholder="Full Name" className='form-control'/>
+                    <input name="full_name" value={newAddress.full_name} onChange={handleChange} placeholder="Full Name" className='form-control' />
                   </div>
                   <div className="form-group">
-                     <input name="phone" value={newAddress.phone} onChange={handleChange} placeholder="Phone" className='form-control'/>
+                    <input name="phone" value={newAddress.phone} onChange={handleChange} placeholder="Phone" className='form-control' />
                   </div>
                   <div className="form-group">
-                     <input name="country" value={newAddress.country} onChange={handleChange} placeholder="Country" className='form-control'/>
+                    <input name="country" value={newAddress.country} onChange={handleChange} placeholder="Country" className='form-control' />
                   </div>
                   <div className="form-group">
-                     <input name="state" value={newAddress.state} onChange={handleChange} placeholder="State" className='form-control'/>
+                    <input name="state" value={newAddress.state} onChange={handleChange} placeholder="State" className='form-control' />
                   </div>
                   <div className="form-group">
-                     <input name="city" value={newAddress.city} onChange={handleChange} placeholder="City" className='form-control'/>
+                    <input name="city" value={newAddress.city} onChange={handleChange} placeholder="City" className='form-control' />
                   </div>
                   <div className="form-group">
-                     <input name="zip" value={newAddress.zip} onChange={handleChange} placeholder="Zip" className='form-control'/>
+                    <input name="zip" value={newAddress.zip} onChange={handleChange} placeholder="Zip" className='form-control' />
                   </div>
                   <div className="form-group">
-                     <textarea name="address" value={newAddress.address} onChange={handleChange} placeholder="Street Address" className='form-control'></textarea>
+                    <textarea name="address" value={newAddress.address} onChange={handleChange} placeholder="Street Address" className='form-control'></textarea>
                   </div>
                   <label>
                     <input
@@ -247,7 +259,7 @@ const Profile = () => {
               {/* Display All Addresses */}
               {form.addresses && form.addresses.length > 0 && (
                 <div className="mt-4">
-                  <h6>Saved Addresses</h6>
+                  <h6 className="mb-1">Saved Addresses</h6>
                   {form.addresses.map(addr => (
                     <div key={addr.id} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px' }}>
                       <p>{addr.full_name} | {addr.phone}</p>
@@ -262,7 +274,7 @@ const Profile = () => {
                         />
                         Set as Primary
                       </label>
-                      <button className='btn btn-outline-secondary' onClick={() => handleEditAddress(addr.id)}>Edit</button>
+                      <button className='btn btn-outline-secondary' onClick={() => handleEditAddress(addr.id)}><MdEdit /> Edit</button>
                     </div>
                   ))}
                 </div>

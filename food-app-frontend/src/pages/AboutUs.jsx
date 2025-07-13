@@ -11,9 +11,9 @@ const AboutUs = ({ imagePath, baseUrl }) => {
         <>
             <TopSection
                 title="About Us"
-                subtitle="We guarantee delivery that arrives within an hour"
+                subtitle="Welcome to Eatsy – where great taste meets convenience!"
             />
-            <section className="about-us-section py-5 bg-light">
+            <section className="about-us-section py-5 commonColor">
                 <div className="container">
                     <div className="row align-items-center">
 

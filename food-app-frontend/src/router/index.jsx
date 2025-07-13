@@ -11,6 +11,8 @@ import CheckoutPage from '../pages/Checkout';
 import ContactUs from '../pages/GetInTouch';
 import Profile from '../pages/Profile';
 import AboutUs from '../pages/AboutUs';
+import MyOrders from "../components/UserOrders";
+import Faqs from "../pages/FAQComponent";
 
 // Auth 
 import AuthLayout from '../auth/AuthLayout';
@@ -38,7 +40,9 @@ const router = createBrowserRouter([
       { path: 'cart/:id', element: <CartPage  imagePath="/assets/images/"/> },
       { path: 'checkout', element: <CheckoutPage imagePath="/assets/images/" /> },
       { path: 'profile', element: <Profile /> },
+      { path: 'my-orders', element:  <MyOrders />},
       { path: 'about-us', element: <AboutUs imagePath="/assets/images/"/> },
+      { path: 'faqs', element: <Faqs imagePath="/assets/images/"/> },
     ],
   },
 
