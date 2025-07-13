@@ -30,7 +30,7 @@ const CartPage = ({ imagePath }) => {
                                         <Link to={`/product-details/${item.id}`} className="text-decoration-none text-dark">
                                             <div className="d-flex align-items-center" style={{ cursor: 'pointer' }}>
                                                 <img
-                                                    src={`http://localhost:5000/uploads/${item.image}`}
+                                                    src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${item.image}`}
                                                     alt={item.name}
                                                     style={{ width: 60, height: 60, objectFit: 'cover', marginRight: '15px' }}
                                                 />

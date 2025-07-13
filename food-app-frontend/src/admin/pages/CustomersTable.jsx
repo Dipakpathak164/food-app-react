@@ -10,7 +10,7 @@ const CustomersTable = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/admin/customers')
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/admin/customers`)
       .then((res) => res.json())
       .then((data) => setCustomers(data))
       .catch((err) => console.error('Failed to fetch customers:', err));
@@ -24,9 +24,9 @@ const CustomersTable = () => {
   const handleDelete = () => {
     if (!deleteId) return;
 
-    fetch(`http://localhost:5000/api/admin/customers/${deleteId}`, {
-      method: 'DELETE',
-    })
+     fetch(`${import.meta.env.VITE_API_BASE_URL}/api/admin/customers/${deleteId}`, {
+     method: 'DELETE',
+      })
       .then((res) => res.json())
       .then(() => {
         setCustomers(customers.filter((user) => user.id !== deleteId));

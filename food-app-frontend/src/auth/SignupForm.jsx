@@ -36,7 +36,7 @@ const SignupForm = () => {
             // Simulate a 1-second delay before making the API call (if needed)
             await new Promise((resolve) => setTimeout(resolve, 1000));
 
-            const res = await axios.post('http://localhost:5000/api/auth/signup', formData);
+            const res = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/signup`, formData);
             const { token, user } = res.data;
 
             if (token && user) {
