@@ -17,7 +17,7 @@ const FoodLists = () => {
 
     const fetchFoods = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/foods');
+            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/foods`);
             setFoods(res.data);
         } catch (error) {
             toast.error('❌ Failed to fetch foods');
@@ -36,7 +36,7 @@ const FoodLists = () => {
         const toastId = toast.loading('Deleting food...');
 
         try {
-            const res = await axios.delete(`http://localhost:5000/api/foods/${foodToDelete}`);
+            const res = await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/foods/${foodToDelete}`);
             console.log("🧾 Delete response:", res);
 
             // Confirm the response and message
@@ -93,7 +93,7 @@ const FoodLists = () => {
                                 <td>
                                     {food.image && (
                                         <img
-                                            src={`http://localhost:5000/uploads/${food.image}`}
+                                            src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${food.image}`}
                                             alt={food.name}
                                             style={{ width: '60px', height: '60px', objectFit: 'cover' }}
                                         />

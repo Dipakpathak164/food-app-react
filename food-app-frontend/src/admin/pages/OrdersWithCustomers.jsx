@@ -6,7 +6,7 @@ const OrdersWithCustomers = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/admin/orders-with-customers');
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/admin/orders-with-customers`);
         const data = await res.json();
         console.log('Fetched Orders:', data);
         setOrders(data);
@@ -20,11 +20,12 @@ const OrdersWithCustomers = () => {
 
   const markAsDelivered = async (orderId) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/orders/${orderId}/status`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/admin/orders/${orderId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'delivered' }),
       });
+
       const result = await res.json();
       console.log('Marked as delivered:', result);
       // Refresh orders
@@ -40,11 +41,12 @@ const OrdersWithCustomers = () => {
 
   const cancelOrder = async (orderId) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/admin/orders/${orderId}/status`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/admin/orders/${orderId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'cancelled' }),
       });
+
       const result = await res.json();
       console.log('Cancelled order:', result);
       // Refresh orders

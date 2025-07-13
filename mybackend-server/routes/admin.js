@@ -133,5 +133,23 @@ router.put('/orders/:id/status', (req, res) => {
   });
 });
 
+// Example endpoint: /api/admin/stats
+router.get('/stats', async (req, res) => {
+  try {
+    const [users] = await db.promise().query('SELECT COUNT(*) AS count FROM users');
+    const [orders] = await db.promise().query('SELECT COUNT(*) AS count FROM orders');
+    const [foods] = await db.promise().query('SELECT COUNT(*) AS count FROM foods');
+
+    res.json({
+      customers: users[0].count,
+      orders: orders[0].count,
+      foods: foods[0].count
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching stats' });
+  }
+});
+
+
 
 module.exports = router;

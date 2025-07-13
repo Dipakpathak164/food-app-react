@@ -7,12 +7,9 @@ const createUsersTable = `
   email VARCHAR(100) UNIQUE,
   password VARCHAR(255),
   profile_image VARCHAR(255),
-  address TEXT,
-  primary_address TEXT,  -- Added this column to store the primary address
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 `;
-
 
 db.query(createUsersTable, (err, result) => {
   if (err) {
@@ -83,19 +80,20 @@ db.query(createOrdersTable, (err, result) => {
 
 const createUserAddressesTable = `
   CREATE TABLE IF NOT EXISTS user_addresses (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    full_name VARCHAR(255),
-    phone VARCHAR(20),
-    country VARCHAR(100) DEFAULT 'India',
-    state VARCHAR(100),
-    city VARCHAR(100),
-    zip VARCHAR(20),
-    address TEXT,
-    is_primary BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-  );
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  full_name VARCHAR(255) NOT NULL,
+  phone VARCHAR(20) NOT NULL,
+  country VARCHAR(100) DEFAULT 'India',
+  state VARCHAR(100),
+  city VARCHAR(100),
+  zip VARCHAR(20),
+  address TEXT,
+  is_primary BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  UNIQUE KEY unique_primary_address_per_user (user_id, is_primary)
+);
 `;
 
 db.query(createUserAddressesTable, (err, result) => {

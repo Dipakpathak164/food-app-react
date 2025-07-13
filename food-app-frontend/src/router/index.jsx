@@ -9,7 +9,11 @@ import ProductDetails from '../pages/ProductDetail';
 import CartPage from '../pages/CartPage';
 import CheckoutPage from '../pages/Checkout';
 import ContactUs from '../pages/GetInTouch';
-import Profile from '../pages/Profile'
+import Profile from '../pages/Profile';
+import AboutUs from '../pages/AboutUs';
+import MyOrders from "../components/UserOrders";
+import Faqs from "../pages/FAQComponent";
+import Menu from "../pages/Menu";
 
 // Auth 
 import AuthLayout from '../auth/AuthLayout';
@@ -37,6 +41,10 @@ const router = createBrowserRouter([
       { path: 'cart/:id', element: <CartPage  imagePath="/assets/images/"/> },
       { path: 'checkout', element: <CheckoutPage imagePath="/assets/images/" /> },
       { path: 'profile', element: <Profile /> },
+      { path: 'my-orders', element:  <MyOrders />},
+      { path: 'about-us', element: <AboutUs imagePath="/assets/images/"/> },
+      { path: 'faqs', element: <Faqs imagePath="/assets/images/"/> },
+      { path: 'menu', element: <Menu imagePath="/assets/images/"/> },
     ],
   },
 

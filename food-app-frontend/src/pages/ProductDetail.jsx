@@ -16,7 +16,7 @@ const ProductDetails = ({ imagePath = '/assets/images/' }) => {
   const zoomLensRef = useRef(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/foods/${id}`)
+      axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/foods/${id}`)
       .then(res => setProduct(res.data))
       .catch(err => console.error(err));
   }, [id]);
@@ -79,7 +79,7 @@ const ProductDetails = ({ imagePath = '/assets/images/' }) => {
                 <div className="main-image position-relative">
                   <img
                     ref={mainImageRef}
-                    src={`http://localhost:5000/uploads/${product.image}`}
+                    src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${product.image}`}
                     alt={product.name}
                     onMouseMove={handleZoom}
                     onMouseLeave={hideZoom}

@@ -67,6 +67,8 @@ router.post('/signup', async (req, res) => {
 
 // === Login ===
 router.post('/signin', async (req, res) => {
+    console.log('🔥 POST /api/auth/signin hit');
+    console.log('📦 Received body:', req.body); // Add this
   const { email, password } = req.body;
 
   // ✅ Check if credentials match super admin

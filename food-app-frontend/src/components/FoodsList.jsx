@@ -12,7 +12,7 @@ const FoodList = ({ imagePath }) => {
   const [loadingItemId, setLoadingItemId] = useState(null);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/foods')
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/foods`)
       .then(res => setFoods(res.data))
       .catch(err => console.error('Failed to fetch foods:', err));
   }, []);
@@ -64,10 +64,11 @@ const FoodList = ({ imagePath }) => {
               </div>
               <div className="cards_body">
                 <img
-                  src={`http://localhost:5000/uploads/${item.image}`}
+                  src={`${import.meta.env.VITE_API_BASE_URL}/uploads/${item.image}`}
                   alt={item.name}
                   style={{ width: '100%', height: '200px', objectFit: 'contain' }}
                 />
+
               </div>
             </div>
             <div className="cards_footer d-flex align-items-center justify-content-between">
@@ -117,7 +118,8 @@ const FoodList = ({ imagePath }) => {
                       }}
                       title='Remove Item'
                     >
-                      <img src={`${imagePath}minus-sign.png`} alt="remove" />
+                      <img src={`${imagePath}minus-sign.png`} className='me-2' alt="remove" />
+                      Remove
                     </button>
                   </div>
                 )}

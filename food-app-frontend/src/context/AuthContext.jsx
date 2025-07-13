@@ -1,13 +1,13 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import * as jwt_decode from 'jwt-decode'; // Add this import to decode JWT
+import { jwtDecode } from 'jwt-decode'; // ✅ ESM-friendly import
 
 const AuthContext = createContext();
 
 const isValidToken = (token) => {
   try {
-    const decoded = jwt_decode(token);
+    const decoded = jwtDecode(token); // ✅ updated function call
     const currentTime = Date.now() / 1000;
-    return decoded.exp > currentTime;  // Check if token is expired
+    return decoded.exp > currentTime; // Token still valid
   } catch (error) {
     console.error('❌ Invalid token:', error);
     return false;
@@ -45,9 +45,9 @@ export const AuthProvider = ({ children }) => {
 
   const login = (token, userData) => {
     localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(userData));  // userData should have primaryAddress
+    localStorage.setItem('user', JSON.stringify(userData));
     setIsLoggedIn(true);
-    setUser(userData);  // This should include primaryAddress in userData
+    setUser(userData);
   };
 
   const logout = async () => {

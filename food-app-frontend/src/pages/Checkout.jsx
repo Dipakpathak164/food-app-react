@@ -91,7 +91,7 @@ const Checkout = () => {
 
         try {
             // Send request with token in headers
-            const res = await fetch('http://localhost:5000/api/place-order', {
+            const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/place-order`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
