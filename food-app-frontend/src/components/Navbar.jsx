@@ -104,8 +104,8 @@ const Navbar = ({setCartOpen, baseUrl = '/', imagePath = '/assets/images/' }) =>
                 </ul>
 
                 <ul className='d-flex align-items-center'>
-                  <li className="">
-                    <a href="#" className="btn unique-button unique-button-border">Menu</a>
+                  <li className={isActive('/menu')}>
+                    <Link to={`${baseUrl}menu`} className="btn unique-button unique-button-border">Menu</Link>
                   </li>
                   <li>
                     <CartIcon imagePath={imagePath} setCartOpen={setCartOpen} />

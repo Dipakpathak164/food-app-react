@@ -118,7 +118,8 @@ const FoodList = ({ imagePath }) => {
                       }}
                       title='Remove Item'
                     >
-                      <img src={`${imagePath}minus-sign.png`} alt="remove" />
+                      <img src={`${imagePath}minus-sign.png`} className='me-2' alt="remove" />
+                      Remove
                     </button>
                   </div>
                 )}
