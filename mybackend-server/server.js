@@ -18,7 +18,7 @@ const app = express();
 // ✅ Allow requests from both localhost and LAN IP (update IP as needed)
 const allowedOrigins = [
   'http://localhost:5173',
-  'http://192.168.1.4:5173', // Replace with your host machine's IP
+  'http://192.168.0.139:5173', // Replace with your host machine's IP
 ];
 
 app.use(cors({
